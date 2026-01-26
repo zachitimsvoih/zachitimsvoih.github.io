@@ -86,15 +86,26 @@ form input, form textarea { width:100%; padding:11px; border:1px solid var(--bor
 form button { width:100%; }
 
 /* ===== Дипломы / сертификаты ===== */
-.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:14px; }
-.grid-3 img {
-  width:100%;
-  max-width:250px;
-  height:auto;
-  display:block;
-  margin:0 auto;
-  border-radius:8px;
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 14px;
+  justify-items: center; /* центрируем карточки в колонках */
 }
+
+.grid-3 .card {
+  max-width: 260px;  /* карточка не растягивается */
+  width: 100%;
+}
+
+.grid-3 img {
+  width: 100%;       /* вписываемся в карточку */
+  height: auto;      /* сохраняем пропорции */
+  border-radius: 8px;
+  display: block;
+}
+
 
 /* ===== Футер ===== */
 footer { padding:30px 0; color:var(--muted); font-size:14px; }
