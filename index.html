@@ -2,20 +2,18 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LegalFortConsulting — юридические услуги в Москве</title>
-  <meta name="description" content="LegalFortConsulting — профессиональная юридическая помощь в Москве: консультации, суды, договоры, сопровождение бизнеса, военнослужащих и вопросы военного права.">
-
+  <meta name="description" content="LegalFortConsulting — профессиональная юридическая помощь в Москве: консультации, суды, договоры, сопровождение бизнеса, военнослужащих и вопросы военного права. Конфиденциально и результативно.">
+  
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Overlay для мобильного меню -->
-<div class="menu-overlay"></div>
+<!-- Overlay для меню -->
+<div class="menu-overlay" id="menuOverlay"></div>
 
-<!-- =========================
-     Хедер / Навигация
-========================== -->
+<!-- Хедер -->
 <header>
   <div class="container nav">
     <div class="brand">
@@ -28,15 +26,13 @@
       </div>
     </div>
 
-    <!-- Бургер -->
-    <button class="burger" aria-label="Открыть меню">
+    <button class="burger" id="burgerBtn" aria-label="Открыть меню">
       <span></span>
       <span></span>
       <span></span>
     </button>
 
-    <!-- Меню -->
-    <nav class="menu">
+    <nav class="menu" id="mobileMenu">
       <a href="#services">Услуги</a>
       <a href="#about">О компании</a>
       <a href="#prices">Стоимость</a>
@@ -47,137 +43,96 @@
 
 <main class="container">
 
-  <!-- =========================
-       Hero блок
-  ========================== -->
-  <section class="hero">
-    <div class="hero-text">
-      <div class="badge">Надёжная правовая защита</div>
-      <h1>Юридическая помощь в Москве для бизнеса, частных лиц и военнослужащих</h1>
-      <p class="lead">LegalFortConsulting — команда практикующих юристов. Консультации по гражданскому, военному праву, контрактной службе, вопросам СВО. Работаем только за результат, конфиденциально и в интересах клиента.</p>
-      <div class="cta">
-        <button class="btn" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Получить консультацию</button>
-        <a class="btn ghost" href="#services">Смотреть услуги</a>
-      </div>
-
-      <!-- Наш подход -->
-      <div class="approach-card">
-        <div class="approach-text">
-          <strong>Наш подход</strong>
-          <ul>
-            <li>Глубокий анализ ситуации до начала работы</li>
-            <li>Прозрачная стратегия и понятные шаги</li>
-            <li>Юридическая ответственность за результат</li>
-          </ul>
-        </div>
-        <div class="approach-img">
-          <img src="assets/podhod.jpg" alt="Наш подход">
-        </div>
-      </div>
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="badge">Надёжная правовая защита</div>
+    <h1>Юридическая помощь в Москве для бизнеса, частных лиц и военнослужащих</h1>
+    <p class="lead">LegalFortConsulting — команда практикующих юристов. Консультации по гражданскому, военному праву, контрактной службе, вопросам СВО. Работаем только за результат, конфиденциально и в интересах клиента.</p>
+    <div class="cta">
+      <button class="btn" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Получить консультацию</button>
+      <a class="btn ghost" href="#services">Смотреть услуги</a>
     </div>
 
-    <aside class="card contact-card hero-img">
-      <div style="font-size:14px;color:var(--muted)">Связаться с нами</div>
-      <div class="phone">+7 (910) 437‑54‑90</div>
-      <div class="lead-small">Telegram / WhatsApp</div>
-      <hr style="margin:14px 0;border:none;border-top:1px solid var(--border)">
-      <div class="lead-small">Режим работы</div>
-      <div style="font-weight:700">Пн–Вс: 10:00–20:00</div>
-      <button class="btn" style="margin-top:14px" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Оставить заявку</button>
-    </aside>
-  </section>
-
-  <!-- =========================
-       Услуги
-  ========================== -->
-  <section id="services">
-    <h2>Юридические услуги</h2>
-    <p class="lead-small">Комплексное сопровождение — от консультации до полного разрешения ситуации, включая военно-правовые вопросы.</p>
-    <div class="services">
-      <div class="card service">
-        <strong>Юридические консультации</strong>
-        <p class="lead-small">Очные и дистанционные консультации, правовой анализ, включая военнослужащих и контракт СВО.</p>
+    <div class="approach-card">
+      <div class="approach-text">
+        <strong>Наш подход</strong>
+        <ul>
+          <li>Глубокий анализ ситуации до начала работы</li>
+          <li>Прозрачная стратегия и понятные шаги</li>
+          <li>Юридическая ответственность за результат</li>
+        </ul>
       </div>
-      <div class="card service">
-        <strong>Судебная защита</strong>
-        <p class="lead-small">Представительство в судах всех инстанций, включая споры по контрактной службе.</p>
-      </div>
-      <div class="card service">
-        <strong>Договорное право</strong>
-        <p class="lead-small">Разработка, проверка, сопровождение сделок.</p>
-      </div>
-      <div class="card service">
-        <strong>Семейные споры</strong>
-        <p class="lead-small">Разводы, алименты, раздел имущества.</p>
-      </div>
-      <div class="card service">
-        <strong>Наследственные дела</strong>
-        <p class="lead-small">Вступление в наследство, споры, защита долей.</p>
-      </div>
-      <div class="card service">
-        <strong>Бизнес‑сопровождение</strong>
-        <p class="lead-small">Абонентское юридическое обслуживание компаний.</p>
+      <div class="approach-img">
+        <img src="assets/podhod.jpg" alt="Наш подход">
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- =========================
-       Сертификаты / дипломы (Карусель)
-  ========================== -->
-  <section id="trust">
-  <h2>Наши сертификаты и дипломы</h2>
-  <div class="carousel">
-    <button class="carousel-btn prev">&#10094;</button>
-    <div class="carousel-track">
-      <div class="carousel-item card">
-        <img src="assets/diplom1.jpg" alt="Диплом 1">
-        <p class="lead-small">Диплом / сертификат</p>
-      </div>
-      <div class="carousel-item card">
-        <img src="assets/diplom2.jpg" alt="Диплом 2">
-        <p class="lead-small">Диплом / сертификат</p>
-      </div>
-      <div class="carousel-item card">
-        <img src="assets/diplom3.jpg" alt="Диплом 3">
-        <p class="lead-small">Диплом / сертификат</p>
-      </div>
-      <!-- Добавляй новые дипломы так же -->
-    </div>
-    <button class="carousel-btn next">&#10095;</button>
+  <aside class="card contact-card">
+    <div style="font-size:14px;color:var(--muted)">Связаться с нами</div>
+    <div class="phone">+7 (910) 437‑54‑90</div>
+    <div class="lead-small">Telegram / WhatsApp</div>
+    <hr>
+    <div class="lead-small">Режим работы</div>
+    <div style="font-weight:700">Пн–Вс: 10:00–20:00</div>
+    <button class="btn" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Оставить заявку</button>
+  </aside>
+</section>
+
+<!-- Услуги -->
+<section id="services">
+  <h2>Юридические услуги</h2>
+  <p class="lead-small">Комплексное сопровождение — от консультации до полного разрешения ситуации, включая военно-правовые вопросы.</p>
+  <div class="services">
+    <div class="card service"><strong>Юридические консультации</strong><p class="lead-small">Очные и дистанционные консультации, правовой анализ, включая военнослужащих и контракт СВО.</p></div>
+    <div class="card service"><strong>Судебная защита</strong><p class="lead-small">Представительство в судах всех инстанций, включая споры по контрактной службе.</p></div>
+    <div class="card service"><strong>Договорное право</strong><p class="lead-small">Разработка, проверка, сопровождение сделок.</p></div>
+    <div class="card service"><strong>Семейные споры</strong><p class="lead-small">Разводы, алименты, раздел имущества.</p></div>
+    <div class="card service"><strong>Наследственные дела</strong><p class="lead-small">Вступление в наследство, споры, защита долей.</p></div>
+    <div class="card service"><strong>Бизнес‑сопровождение</strong><p class="lead-small">Абонентское юридическое обслуживание компаний.</p></div>
   </div>
 </section>
 
-
-  <!-- =========================
-       Контакты / Форма
-  ========================== -->
-  <section id="contacts">
-    <h2>Контакты</h2>
-    <div class="cols">
-      <div class="card contact-card">
-        <p><strong>Город:</strong> Москва</p>
-        <p><strong>Телефон:</strong> <span class="phone">+7 (910) 437‑54‑90</span></p>
-        <p><strong>Email:</strong> evgeshon11@mail.ru</p>
-      </div>
-
-      <div class="card">
-        <form id="contactForm">
-          <input type="text" name="name" placeholder="Ваше имя" required>
-          <input type="tel" name="phone" placeholder="Пример: +7 (999) 123‑45‑67" required>
-          <input type="text" name="city" placeholder="Город" required>
-          <textarea name="message" rows="4" placeholder="Кратко опишите вопрос"></textarea>
-          <button type="submit" class="btn">Отправить заявку</button>
-          <div id="form-status" style="margin-top:8px;color:green;"></div>
-        </form>
-      </div>
+<!-- Карусель дипломов -->
+<section id="trust">
+  <h2>Наши сертификаты и дипломы</h2>
+  <div class="carousel">
+    <button class="carousel-btn prev">❮</button>
+    <div class="carousel-track">
+      <div class="carousel-item"><img src="assets/diplom1.jpg" alt="Диплом 1"></div>
+      <div class="carousel-item"><img src="assets/diplom2.jpg" alt="Диплом 2"></div>
+      <div class="carousel-item"><img src="assets/diplom3.jpg" alt="Диплом 3"></div>
     </div>
-  </section>
+    <button class="carousel-btn next">❯</button>
+  </div>
+</section>
+
+<!-- Контакты -->
+<section id="contacts">
+  <h2>Контакты</h2>
+  <div class="cols">
+    <div class="card">
+      <p><strong>Город:</strong> Москва</p>
+      <p><strong>Телефон:</strong> <span class="phone">+7 (910) 437‑54‑90</span></p>
+      <p><strong>Email:</strong> evgeshon11@mail.ru</p>
+    </div>
+
+    <div class="card">
+      <form id="contactForm">
+        <input type="text" name="name" placeholder="Ваше имя" required>
+        <input type="tel" name="phone" placeholder="Пример: +7 (999) 123‑45‑67" required>
+        <input type="text" name="city" placeholder="Город" required>
+        <textarea name="message" rows="4" placeholder="Кратко опишите вопрос"></textarea>
+        <button type="submit" class="btn">Отправить заявку</button>
+        <div id="form-status"></div>
+      </form>
+    </div>
+  </div>
+</section>
 
 </main>
 
-<!-- =========================
-     Footer
-========================== -->
 <footer>
   <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
     <div>© LegalFortConsulting, Москва</div>
