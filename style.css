@@ -250,7 +250,6 @@ form button { width:100%; }
   display:block;
 }
 
-/* Кнопки карусели */
 .carousel-btn {
   position:absolute;
   top:50%;
@@ -315,20 +314,12 @@ footer {
   .cta { flex-direction:column; }
   .cta .btn { width:100%; }
 }
-/* =========================
-   Мобильная адаптация для блока контактов
-========================= */
+
 @media(max-width:768px){
-  /* Колонки контактов становятся вертикальными */
   .cols {
     display: flex;
-    flex-direction: column; /* сначала контактная информация, потом форма */
+    flex-direction: column;
     gap: 16px;
   }
-
-  /* Карточки растягиваются на всю ширину */
-  .cols .card {
-    flex: 1 1 100%;
-  }
+  .cols .card { flex: 1 1 100%; }
 }
-
