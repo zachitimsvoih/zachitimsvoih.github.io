@@ -5,3 +5,43 @@ input, textarea { width:100%; padding:10px; margin-bottom:10px; border:1px solid
 button { padding:10px 15px; background:#1f6fe0; color:white; border:none; border-radius:6px; cursor:pointer; }
 button:hover { background:#155db2; }
 #form-status { margin-top:10px; font-weight:700; }
+/* =========================
+   Адаптация под мобильные
+========================= */
+@media (max-width: 768px) {
+
+  /* HERO — всё в колонку */
+  .hero {
+    flex-direction: column;
+  }
+
+  /* Карточка "Связаться с нами" — на всю ширину */
+  .hero aside {
+    width: 100%;
+  }
+
+  /* "Наш подход" — картинка ПОД текстом */
+  .hero .card {
+    flex-direction: column;
+  }
+
+  /* Картинки — во всю ширину */
+  .hero img {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Уменьшаем заголовок */
+  h1 {
+    font-size: 24px;
+  }
+
+  /* Кнопки — во всю ширину */
+  .cta {
+    flex-direction: column;
+  }
+
+  .cta .btn {
+    width: 100%;
+  }
+}
