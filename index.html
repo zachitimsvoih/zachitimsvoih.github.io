@@ -19,7 +19,7 @@
       --border: #e3dbd2;
     }
 
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
     body {
       font-family: Inter, system-ui, 'Segoe UI', Roboto, Arial;
       line-height: 1.6;
@@ -331,6 +331,114 @@
     }
 
     @media(max-width:520px){.services{grid-template-columns:1fr}}
+
+    /* =========================
+       Модальное окно согласия
+    ========================== */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+      animation: modalSlideIn 0.3s ease-out;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal h3 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 0 0 16px 0;
+    }
+
+    .modal p {
+      color: var(--text);
+      line-height: 1.7;
+      margin: 0 0 20px 0;
+      font-size: 15px;
+    }
+
+    .modal-checkbox {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 20px 0;
+      cursor: pointer;
+    }
+
+    .modal-checkbox input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .modal-checkbox label {
+      cursor: pointer;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .modal-checkbox label a {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 2px solid var(--accent);
+    }
+
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -534,6 +642,35 @@
 </section>
 
 <!-- =========================
+     О компании
+========================== -->
+<section id="about">
+  <h2>О компании</h2>
+  <div class="cols">
+    <div class="card">
+      <h3 style="font-size: 20px; font-weight: 700; color: var(--accent); margin: 0 0 16px 0;">LegalFortConsulting</h3>
+      <p class="lead-small" style="margin-bottom: 16px;">Команда практикующих юристов с многолетним опытом работы в различных областях права. Мы специализируемся на предоставлении комплексной юридической помощи частным лицам, бизнесу и военнослужащим.</p>
+      <p class="lead-small" style="margin-bottom: 16px;">Наша миссия — обеспечить надежную правовую защиту и сопровождение наших клиентов на всех этапах решения их правовых вопросов.</p>
+      <div style="margin-top: 20px;">
+        <strong style="color: var(--accent); display: block; margin-bottom: 12px;">Наши преимущества:</strong>
+        <ul style="margin: 0; padding-left: 20px; color: var(--text); line-height: 1.8;">
+          <li>Глубокий анализ ситуации до начала работы</li>
+          <li>Прозрачная стратегия и понятные шаги</li>
+          <li>Юридическая ответственность за результат</li>
+          <li>Конфиденциальность и защита интересов клиента</li>
+          <li>Опыт работы с военнослужащими и вопросами военного права</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="font-size: 20px; font-weight: 700; color: var(--accent); margin: 0 0 16px 0;">Наш подход</h3>
+      <p class="lead-small" style="margin-bottom: 16px;">Мы работаем только за результат. Каждое дело для нас — это возможность помочь клиенту решить его проблему максимально эффективно и в кратчайшие сроки.</p>
+      <p class="lead-small">Наша команда постоянно повышает квалификацию и следит за изменениями в законодательстве, чтобы предоставлять актуальные и эффективные юридические услуги.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================
      Контакты / Форма заявки
 ========================== -->
 <section id="contacts">
@@ -610,6 +747,28 @@
 </footer>
 
 <!-- =========================
+     Модальное окно согласия на обработку персональных данных
+========================== -->
+<div class="modal-overlay" id="consentModal">
+  <div class="modal">
+    <h3>Согласие на обработку персональных данных</h3>
+    <p>Отправляя заявку, вы даете согласие на обработку ваших персональных данных в соответствии с Федеральным законом № 152-ФЗ «О персональных данных».</p>
+    <p>Мы используем предоставленные вами данные исключительно для связи с вами и обработки вашей заявки. Ваши данные не будут переданы третьим лицам без вашего согласия.</p>
+    <div class="modal-checkbox">
+      <input type="checkbox" id="consentCheckbox" required>
+      <label for="consentCheckbox">
+        Я согласен(а) на обработку персональных данных и подтверждаю, что ознакомлен(а) с 
+        <a href="#" onclick="event.preventDefault(); alert('Политика конфиденциальности будет размещена здесь');">политикой конфиденциальности</a>
+      </label>
+    </div>
+    <div class="modal-buttons">
+      <button type="button" class="btn btn-secondary" id="consentCancel">Отмена</button>
+      <button type="button" class="btn" id="consentAccept">Принять и отправить</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
      JS: форма + бургер + overlay + карусель
 ========================== -->
 <script>
@@ -619,37 +778,29 @@ const menu = document.querySelector("nav.menu");
 const overlay = document.querySelector("#menuOverlay");
 
 if (burger && menu && overlay) {
-    // Открытие / закрытие меню
-    burger.addEventListener('click', () => {
-        burger.classList.toggle('active');   // анимация кнопки
-        menu.classList.toggle('active');     // открыть/закрыть меню
-        overlay.classList.toggle('active');  // показать/скрыть overlay
-    });
-
-    // Закрытие по клику на overlay
-    overlay.addEventListener('click', () => {
+    const toggleMenu = () => {
+        burger.classList.toggle('active');
+        menu.classList.toggle('active');
+        overlay.classList.toggle('active');
+    };
+    const closeMenu = () => {
         burger.classList.remove('active');
         menu.classList.remove('active');
         overlay.classList.remove('active');
+    };
+    burger.addEventListener('click', toggleMenu);
+    overlay.addEventListener('click', closeMenu);
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+                if (burger.classList.contains('active')) closeMenu();
+            }
+        });
     });
 }
-
-// ===== Плавная прокрутка + закрытие меню при клике на ссылку =====
-document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-        }
-        // Закрыть меню, если оно открыто
-        if (burger && burger.classList.contains('active')) {
-            burger.classList.remove('active');
-            if (menu) menu.classList.remove('active');
-            if (overlay) overlay.classList.remove('active');
-        }
-    });
-});
 
 // ===== Карусель для дипломов =====
 (function() {
@@ -883,90 +1034,96 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
     });
 })();
 
-// ===== JS для формы =====
+// ===== Модальное окно согласия и форма =====
+const consentModal = document.getElementById('consentModal');
+const consentCheckbox = document.getElementById('consentCheckbox');
+const consentAccept = document.getElementById('consentAccept');
+const consentCancel = document.getElementById('consentCancel');
 const contactForm = document.getElementById("contactForm");
-if (contactForm) {
+const formStatus = document.getElementById("form-status");
+const API_URL = "https://script.google.com/macros/s/AKfycbz0YibnEhifXUu0_FeTF_6va0ve2RtwO2QAMsE5rrPQ7JkbAH3CYg675Ht8wEikZj--Eg/exec";
+
+let formDataToSubmit = null, formElement = null;
+
+if (consentModal && consentCheckbox && consentAccept && consentCancel && contactForm) {
+    const closeConsentModal = () => {
+        consentModal.classList.remove('active');
+        consentCheckbox.checked = false;
+        formDataToSubmit = null;
+        formElement = null;
+    };
+    const openConsentModal = (data, form) => {
+        formDataToSubmit = data;
+        formElement = form;
+        consentModal.classList.add('active');
+        consentCheckbox.checked = false;
+    };
+    consentCancel.addEventListener('click', closeConsentModal);
+    consentModal.addEventListener('click', (e) => e.target === consentModal && closeConsentModal());
+    
     contactForm.addEventListener("submit", function(e) {
         e.preventDefault();
-        const status = document.getElementById("form-status");
-        
-        // Явно собираем все поля
         const name = this.querySelector('[name="name"]').value.trim();
         const phone = this.querySelector('[name="phone"]').value.trim();
         const source = this.querySelector('[name="source"]').value.trim();
         const message = this.querySelector('[name="message"]').value.trim();
-        
-        // Проверяем, что все обязательные поля заполнены
         if (!name || !phone || !source) {
-            if (status) {
-                status.innerText = "Пожалуйста, заполните все обязательные поля.";
-                status.style.color = "red";
+            if (formStatus) {
+                formStatus.innerText = "Пожалуйста, заполните все обязательные поля.";
+                formStatus.style.color = "red";
             }
             return;
         }
-        
-        // Показываем индикатор загрузки
-        if (status) {
-            status.innerText = "Отправка...";
-            status.style.color = "var(--muted)";
-        }
-
-        // Создаем FormData с явно указанными полями
-        // Важно: используем 'source' вместо 'city', так как Google Apps Script ожидает именно 'source'
         const formDataToSend = new FormData();
         formDataToSend.append('name', name);
         formDataToSend.append('phone', phone);
         formDataToSend.append('source', source);
         formDataToSend.append('message', message || '');
-        
-        // Логирование для отладки (можно убрать после проверки)
-        console.log('Отправка данных:', {
-            name: name,
-            phone: phone,
-            source: source,
-            message: message
-        });
-        
-        // Проверяем, что source действительно добавлен
-        console.log('FormData содержит source:', formDataToSend.has('source'));
-        console.log('Значение source в FormData:', formDataToSend.get('source'));
-
-        fetch("https://script.google.com/macros/s/AKfycbz0YibnEhifXUu0_FeTF_6va0ve2RtwO2QAMsE5rrPQ7JkbAH3CYg675Ht8wEikZj--Eg/exec", {
-            method: "POST",
-            body: formDataToSend
-        })
-        .then(response => {
-            console.log('Response status:', response.status);
-            return response.text();
-        })
-        .then(text => {
-            console.log('Response text:', text);
-            if (status) {
-                status.innerText = "Заявка успешно отправлена!";
-                status.style.color = "green";
+        openConsentModal(formDataToSend, this);
+    });
+    
+    consentAccept.addEventListener('click', function() {
+        if (!consentCheckbox.checked) {
+            alert('Пожалуйста, подтвердите согласие на обработку персональных данных');
+            return;
+        }
+        if (!formDataToSubmit || !formElement) {
+            closeConsentModal();
+            return;
+        }
+        if (formStatus) {
+            formStatus.innerText = "Отправка...";
+            formStatus.style.color = "var(--muted)";
+        }
+        closeConsentModal();
+        fetch(API_URL, { method: "POST", body: formDataToSubmit })
+        .then(response => response.text())
+        .then(() => {
+            if (formStatus) {
+                formStatus.innerText = "Заявка успешно отправлена!";
+                formStatus.style.color = "green";
             }
-            this.reset();
+            formElement.reset();
         })
-        .catch(error => {
-            console.error('Error:', error);
-            if (status) {
-                status.innerText = "Ошибка отправки, попробуйте позже.";
-                status.style.color = "red";
+        .catch(() => {
+            if (formStatus) {
+                formStatus.innerText = "Ошибка отправки, попробуйте позже.";
+                formStatus.style.color = "red";
             }
         });
     });
 }
 
 // ===== Обработка ошибок загрузки изображений =====
-document.addEventListener('DOMContentLoaded', function() {
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-        img.addEventListener('error', function() {
-            this.style.display = 'none';
-            console.warn('Изображение не загружено:', this.src);
-        });
+const handleImageError = function() { this.style.display = 'none'; };
+const initImageHandlers = () => {
+    document.querySelectorAll('img').forEach(img => {
+        if (img.complete && !img.naturalHeight) handleImageError.call(img);
+        else img.addEventListener('error', handleImageError, { once: true });
     });
-});
+};
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initImageHandlers);
+else initImageHandlers();
 </script>
 </body>
 </html>
