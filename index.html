@@ -20,10 +20,7 @@
     }
 
     * { box-sizing: border-box; }
-    body 
-    <!-- Overlay для затемнения при открытии меню -->
-<div class="menu-overlay"></div>
-{
+    body {
       font-family: Inter, system-ui, 'Segoe UI', Roboto, Arial;
       line-height: 1.6;
       margin: 0;
@@ -89,6 +86,8 @@
 
     /* Сетки */
     .services { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
+    .service { display: flex; flex-direction: column; }
+    .service img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; margin-bottom: 12px; }
     .service strong { display:block; margin-bottom:6px; }
 
     .cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
@@ -101,6 +100,93 @@
     form button { width:100%; }
 
     footer { padding:30px 0; color:var(--muted); font-size:14px; }
+
+    /* =========================
+       Карусель для дипломов
+    ========================== */
+    .carousel-container {
+      position: relative;
+      overflow: hidden;
+      border-radius: 14px;
+      margin-top: 14px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+      will-change: transform;
+    }
+
+    .carousel-item {
+      min-width: 100%;
+      flex-shrink: 0;
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+    }
+
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .carousel-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.3s;
+    }
+
+    .carousel-dot.active {
+      background: var(--accent);
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: background 0.3s;
+      font-size: 20px;
+      color: var(--accent);
+    }
+
+    .carousel-nav:hover {
+      background: var(--card);
+    }
+
+    .carousel-nav.prev {
+      left: 10px;
+    }
+
+    .carousel-nav.next {
+      right: 10px;
+    }
+
+    @media (max-width: 900px) {
+      .carousel-nav {
+        display: none;
+      }
+    }
 
     /* =========================
        Адаптивность / Бургер
@@ -235,26 +321,32 @@
   <p class="lead-small">Комплексное сопровождение — от консультации до полного разрешения ситуации, включая военно-правовые вопросы.</p>
   <div class="services">
     <div class="card service">
+      <img src="assets/service1.jpg" alt="Юридические консультации">
       <strong>Юридические консультации</strong>
       <p class="lead-small">Очные и дистанционные консультации, правовой анализ, включая военнослужащих и контракт СВО.</p>
     </div>
     <div class="card service">
+      <img src="assets/service2.jpg" alt="Судебная защита">
       <strong>Судебная защита</strong>
       <p class="lead-small">Представительство в судах всех инстанций, включая споры по контрактной службе.</p>
     </div>
     <div class="card service">
+      <img src="assets/service3.jpg" alt="Договорное право">
       <strong>Договорное право</strong>
       <p class="lead-small">Разработка, проверка, сопровождение сделок.</p>
     </div>
     <div class="card service">
+      <img src="assets/service4.jpg" alt="Семейные споры">
       <strong>Семейные споры</strong>
       <p class="lead-small">Разводы, алименты, раздел имущества.</p>
     </div>
     <div class="card service">
+      <img src="assets/service5.jpg" alt="Наследственные дела">
       <strong>Наследственные дела</strong>
       <p class="lead-small">Вступление в наследство, споры, защита долей.</p>
     </div>
     <div class="card service">
+      <img src="assets/service6.jpg" alt="Бизнес‑сопровождение">
       <strong>Бизнес‑сопровождение</strong>
       <p class="lead-small">Абонентское юридическое обслуживание компаний.</p>
     </div>
@@ -266,19 +358,30 @@
 ========================== -->
 <section id="trust">
   <h2>Наши сертификаты и дипломы</h2>
-  <div class="grid-3" style="margin-top:14px">
-    <div class="card">
-      <img src="assets/diplom1.jpg" alt="Диплом 1" style="width:100%;border-radius:8px">
-      <p class="lead-small">Диплом / сертификат</p>
+  <div class="carousel-container">
+    <div class="carousel-track" id="carouselTrack">
+      <div class="carousel-item">
+        <div class="card">
+          <img src="assets/diplom1.jpg" alt="Диплом 1">
+          <p class="lead-small" style="margin-top: 12px;">Диплом / сертификат</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="card">
+          <img src="assets/diplom2.jpg" alt="Диплом 2">
+          <p class="lead-small" style="margin-top: 12px;">Диплом / сертификат</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="card">
+          <img src="assets/diplom3.jpg" alt="Диплом 3">
+          <p class="lead-small" style="margin-top: 12px;">Диплом / сертификат</p>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <img src="assets/diplom2.jpg" alt="Диплом 2" style="width:100%;border-radius:8px">
-      <p class="lead-small">Диплом / сертификат</p>
-    </div>
-    <div class="card">
-      <img src="assets/diplom3.jpg" alt="Диплом 3" style="width:100%;border-radius:8px">
-      <p class="lead-small">Диплом / сертификат</p>
-    </div>
+    <button class="carousel-nav prev" id="carouselPrev" aria-label="Предыдущий">‹</button>
+    <button class="carousel-nav next" id="carouselNext" aria-label="Следующий">›</button>
+    <div class="carousel-controls" id="carouselDots"></div>
   </div>
 </section>
 
@@ -320,30 +423,29 @@
 </footer>
 
 <!-- =========================
-     JS: форма + бургер + overlay
+     JS: форма + бургер + overlay + карусель
 ========================== -->
 <script>
-
-
 // ===== Бургер меню =====
-
-  const burger = document.querySelector(".burger");
+const burger = document.querySelector(".burger");
 const menu = document.querySelector("nav.menu");
-const overlay = document.querySelector(".menu-overlay");
+const overlay = document.querySelector("#menuOverlay");
 
-// Открытие / закрытие меню
-burger.addEventListener('click', () => {
-    burger.classList.toggle('active');   // анимация кнопки
-    menu.classList.toggle('active');     // открыть/закрыть меню
-    overlay.classList.toggle('active');  // показать/скрыть overlay
-});
+if (burger && menu && overlay) {
+    // Открытие / закрытие меню
+    burger.addEventListener('click', () => {
+        burger.classList.toggle('active');   // анимация кнопки
+        menu.classList.toggle('active');     // открыть/закрыть меню
+        overlay.classList.toggle('active');  // показать/скрыть overlay
+    });
 
-// Закрытие по клику на overlay
-overlay.addEventListener('click', () => {
-    burger.classList.remove('active');
-    menu.classList.remove('active');
-    overlay.classList.remove('active');
-});
+    // Закрытие по клику на overlay
+    overlay.addEventListener('click', () => {
+        burger.classList.remove('active');
+        menu.classList.remove('active');
+        overlay.classList.remove('active');
+    });
+}
 
 // ===== Плавная прокрутка + закрытие меню при клике на ссылку =====
 document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
@@ -354,30 +456,121 @@ document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
             target.scrollIntoView({ behavior: 'smooth' });
         }
         // Закрыть меню, если оно открыто
-        if (burger.classList.contains('active')) {
+        if (burger && burger.classList.contains('active')) {
             burger.classList.remove('active');
-            menu.classList.remove('active');
-            overlay.classList.remove('active');
+            if (menu) menu.classList.remove('active');
+            if (overlay) overlay.classList.remove('active');
         }
     });
 });
 
-// ===== JS для формы (оставляем твой существующий) =====
-document.getElementById("contactForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const status = document.getElementById("form-status");
-    const formData = new FormData(this);
+// ===== Карусель для дипломов =====
+(function() {
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('carouselPrev');
+    const nextBtn = document.getElementById('carouselNext');
+    const dotsContainer = document.getElementById('carouselDots');
+    
+    if (!track || !prevBtn || !nextBtn || !dotsContainer) return;
+    
+    const items = track.querySelectorAll('.carousel-item');
+    const totalItems = items.length;
+    let currentIndex = 0;
+    
+    // Создание точек навигации
+    for (let i = 0; i < totalItems; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Перейти к слайду ' + (i + 1));
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+    }
+    
+    function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        
+        // Обновление точек
+        const dots = dotsContainer.querySelectorAll('.carousel-dot');
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    function goToSlide(index) {
+        currentIndex = index;
+        updateCarousel();
+    }
+    
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalItems;
+        updateCarousel();
+    }
+    
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        updateCarousel();
+    }
+    
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+    
+    // Автопрокрутка (опционально)
+    let autoPlayInterval = setInterval(nextSlide, 5000);
+    
+    // Остановка автопрокрутки при наведении
+    const carouselContainer = track.closest('.carousel-container');
+    if (carouselContainer) {
+        carouselContainer.addEventListener('mouseenter', () => clearInterval(autoPlayInterval));
+        carouselContainer.addEventListener('mouseleave', () => {
+            autoPlayInterval = setInterval(nextSlide, 5000);
+        });
+    }
+})();
 
-    fetch("https://script.google.com/macros/s/AKfycbz0YibnEhifXUu0_FeTF_6va0ve2RtwO2QAMsE5rrPQ7JkbAH3CYg675Ht8wEikZj--Eg/exec", {
-        method: "POST",
-        body: formData
-    })
-    .then(() => {
-        status.innerText = "Заявка успешно отправлена!";
-        this.reset();
-    })
-    .catch(() => {
-        status.innerText = "Ошибка отправки, попробуйте позже.";
+// ===== JS для формы =====
+const contactForm = document.getElementById("contactForm");
+if (contactForm) {
+    contactForm.addEventListener("submit", function(e) {
+        e.preventDefault();
+        const status = document.getElementById("form-status");
+        const formData = new FormData(this);
+        
+        // Показываем индикатор загрузки
+        if (status) {
+            status.innerText = "Отправка...";
+            status.style.color = "var(--muted)";
+        }
+
+        fetch("https://script.google.com/macros/s/AKfycbz0YibnEhifXUu0_FeTF_6va0ve2RtwO2QAMsE5rrPQ7JkbAH3CYg675Ht8wEikZj--Eg/exec", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            if (status) {
+                status.innerText = "Заявка успешно отправлена!";
+                status.style.color = "green";
+            }
+            this.reset();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            if (status) {
+                status.innerText = "Ошибка отправки, попробуйте позже.";
+                status.style.color = "red";
+            }
+        });
+    });
+}
+
+// ===== Обработка ошибок загрузки изображений =====
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('error', function() {
+            this.style.display = 'none';
+            console.warn('Изображение не загружено:', this.src);
+        });
     });
 });
 </script>
