@@ -123,39 +123,45 @@
 <!-- =========================
      Hero блок
 ========================== -->
-<section class="hero">
-  <div>
-    <div class="badge">Надёжная правовая защита</div>
-    <h1>Юридическая помощь в Москве для бизнеса, частных лиц и военнослужащих</h1>
-    <p class="lead">LegalFortConsulting — команда практикующих юристов. Консультации по военному праву, контрактной службе, вопросам СВО. Работаем только за результат, конфиденциально и в интересах клиента.</p>
-    <div class="cta">
-      <button class="btn" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Получить консультацию</button>
-      <a class="btn ghost" href="#services">Смотреть услуги</a>
+<section class="hero" style="display:flex; gap:32px; flex-wrap:wrap; align-items:flex-start;">
+  <!-- =========================
+       Левый блок: текст + "Наш подход"
+  ========================== -->
+  <div style="flex:1; min-width:300px;">
+    <div>
+      <div class="badge">Надёжная правовая защита</div>
+      <h1>Юридическая помощь в Москве для бизнеса, частных лиц и военнослужащих</h1>
+      <p class="lead">LegalFortConsulting — команда практикующих юристов. Консультации по военному праву, контрактной службе, вопросам СВО. Работаем только за результат, конфиденциально и в интересах клиента.</p>
+      <div class="cta">
+        <button class="btn" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Получить консультацию</button>
+        <a class="btn ghost" href="#services">Смотреть услуги</a>
+      </div>
     </div>
 
-    <!-- Карточка подхода -->
-  <div style="margin-top:26px" class="card" 
-     style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
-  <!-- Левая часть: текст и список -->
-  <div style="flex:1; min-width:200px;">
-    <strong>Наш подход</strong>
-    <ul style="margin:10px 0 0; padding-left:18px">
-      <li>Глубокий анализ ситуации до начала работы</li>
-      <li>Прозрачная стратегия и понятные шаги</li>
-      <li>Юридическая ответственность за результат</li>
-    </ul>
+    <!-- =========================
+         Карточка "Наш подход" с картинкой справа
+    ========================== -->
+    <div class="card" style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-top:26px;">
+      <!-- Текст -->
+      <div style="flex:1; min-width:200px;">
+        <strong>Наш подход</strong>
+        <ul style="margin:10px 0 0; padding-left:18px">
+          <li>Глубокий анализ ситуации до начала работы</li>
+          <li>Прозрачная стратегия и понятные шаги</li>
+          <li>Юридическая ответственность за результат</li>
+        </ul>
+      </div>
+      <!-- Картинка справа -->
+      <div style="flex:0 0 200px;">
+        <img src="assets/podhod.jpg" alt="Наш подход" style="width:100%; border-radius:8px; display:block;">
+      </div>
+    </div>
   </div>
 
-  <!-- Правая часть: картинка -->
-  <div style="flex:0 0 200px;">
-    <img src="assets/podhod.jpg" alt="Наш подход" 
-         style="width:100%; border-radius:8px; display:block;">
-  </div>
-</div>
-
-
-  <!-- Боковая карточка контактов -->
-  <aside class="card">
+  <!-- =========================
+       Правый блок: "Связаться с нами"
+  ========================== -->
+  <aside class="card" style="flex:0 0 300px; min-width:250px;">
     <div style="font-size:14px;color:var(--muted)">Связаться с нами</div>
     <div class="phone" style="font-size:18px;margin:6px 0">+7 (___) ___‑__‑__</div>
     <div class="lead-small">Telegram / WhatsApp</div>
@@ -165,6 +171,7 @@
     <button class="btn" style="margin-top:14px" onclick="document.getElementById('contacts').scrollIntoView({behavior:'smooth'})">Оставить заявку</button>
   </aside>
 </section>
+
 
 <!-- =========================
      Услуги
