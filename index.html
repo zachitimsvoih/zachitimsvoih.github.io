@@ -146,7 +146,18 @@
        СЕРВИСЫ
        ------------------------------------------------- */
     .services { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
-    .service { display:flex; flex-direction:column; }
+    .service {
+      display:flex; flex-direction:column;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      box-shadow:0 6px 16px rgba(0,0,0,.04);
+      transition:transform .3s ease, box-shadow .3s ease;
+    }
+    .service:hover {
+      transform:translateY(-4px);
+      box-shadow:0 12px 24px rgba(0,0,0,.08);
+    }
     .service img {
       width:100%; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:12px;
     }
@@ -176,7 +187,7 @@
     .review-rating { color:#c2a14d; font-size:18px; }
 
     /* -------------------------------------------------
-       КАРУСЕЛЬ (бесконечный, без подписей)
+       КАРУСЕЛЬ (дипломы)
        ------------------------------------------------- */
     .carousel-container {
       position:relative;
@@ -186,22 +197,15 @@
       cursor:grab;
       user-select:none;
       touch-action:none;
-      transition:transform .2s ease;
-    }
-    .carousel-container:hover {
-      cursor:pointer;
-      transform:scale(1.02);
     }
     .carousel-container:active { cursor:grabbing; }
-
     .carousel-track {
       display:flex;
-      gap:18px;                     /* будет переопределено в мобильных запросах */
+      gap:18px;
       transition:transform .3s cubic-bezier(.25,.46,.45,.94);
       will-change:transform;
     }
-    .carousel-track.dragging { transition:none; cursor:grabbing; }
-
+    .carousel-track.dragging { transition:none; }
     .carousel-item {
       flex-shrink:0;
       min-width:0;                 /* ширина задаётся в JS */
@@ -215,7 +219,6 @@
       border-radius:8px;
       display:block;
     }
-
     .carousel-controls {
       display:flex;
       justify-content:center;
@@ -250,91 +253,16 @@
     .carousel-nav.prev { left:10px; }
     .carousel-nav.next { right:10px; }
 
-    /* -------------------------------------------------
-   2️⃣ УСЛУГИ – интерактивные карточки
-   ------------------------------------------------- */
-
-/* Сетка, как у вас была */
-.services {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 22px;
-}
-
-/* Ссылка‑обёртка делает весь блок кликабельным */
-.service-card {
-  text-decoration: none;      /* убираем подчеркивание */
-  color: inherit;              /* наследуем цвет текста */
-}
-
-/* Базовое оформление карточки услуги */
-.service {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 20px;
-  box-shadow: 0 8px 22px rgba(0,0,0,.04);
-  /* плавные переходы */
-  transition: transform .3s ease, box-shadow .3s ease;
-  /* курсор будет указывать, что элемент интерактивный */
-  cursor: pointer;
-}
-
-/* Добавляем лёгкую тень и немного увеличиваем карточку при наведении */
-.service:hover {
-  transform: scale(1.04);
-  box-shadow: 0 12px 30px rgba(0,0,0,.15);
-}
-
-/* Делаем так, чтобы изображение тоже слегка «выходило наружу» */
-.service-img {
-  width: 100%;
-  max-height: 180px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  /* плавный масштаб изображения */
-  transition: transform .3s ease;
-}
-
-/* При наведении – изображение слегка увеличивается */
-.service:hover .service-img {
-  transform: scale(1.08);
-}
-
-/* Стили текста внутри карточки (оставляем как было) */
-.service strong {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: 600;
-}
-.service .lead-small {
-  color: var(--muted);
-  font-size: 15px;
-}
-
-/* -------------------------------------------------
-   Адаптив: при маленьких ширинах меняем количество колонок
-   ------------------------------------------------- */
-@media (max-width: 900px) {
-  .services { grid-template-columns: repeat(2,1fr); }
-}
-@media (max-width: 520px) {
-  .services { grid-template-columns: 1fr; }
-}
-
-
     /* ---- медиазапросы для карусели ---- */
     @media (max-width:900px) {
       .carousel-nav { display:none; }               /* стрелки только на десктопе */
       .carousel-item img { max-height:400px; }
     }
     @media (max-width:520px) {
-      .carousel-item { min-width:100%; }            /* один элемент занимает всю ширину */
-      .carousel-item img { max-height:300px; }
-      .carousel-controls { display:none; }
-      .carousel-track { gap:0; }                    /* убираем промежуток – центрируем */
+      /* На мобильных показываем один диплом по центру, а карусель полностью скрываем */
+      .carousel-container { display:none; }
+      .mobile-diploma { display:block; text-align:center; margin-top:14px; }
+      .mobile-diploma img { max-width:100%; height:auto; border-radius:8px; }
     }
 
     /* -------------------------------------------------
@@ -445,7 +373,7 @@
     }
 
     /* -------------------------------------------------
-       МОДАЛЬНОЕ ОКНО СОГЛАСИЯ
+       МОДАЛЬНОЕ ОКНО С СОГЛАСИЕМ
        ------------------------------------------------- */
     .modal-overlay{
       display:none;
@@ -530,6 +458,22 @@
       word-break:break-word;
       max-width:100%;
     }
+
+    /* -------------------------------------------------
+       ПРЕДПОЧТЕНИЯ ДЛЯ ПОЛЬЗОВАТЕЛЕЙ С ОТКЛЮЧЕННЫМ МАНЕВРОВЫМ ЭФФЕКТОМ
+       ------------------------------------------------- */
+    @media (prefers-reduced-motion: reduce) {
+      .service,
+      .btn,
+      .carousel-track,
+      .carousel-nav,
+      .carousel-dot,
+      .modal {
+        transition:none !important;
+        animation:none !important;
+      }
+      .carousel-container:hover { transform:none; }
+    }
   </style>
 </head>
 
@@ -554,7 +498,7 @@
     </div>
 
     <!-- Бургер‑кнопка -->
-    <button class="burger" id="burgerBtn" aria-label="Открыть меню">
+    <button class="burger" id="burgerBtn" aria-label="Открыть меню" aria-controls="mobileMenu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
 
@@ -658,54 +602,50 @@
   <!-- =========================
        УСЛУГИ
   ========================== -->
- <section id="services">
-  <h2>Юридические услуги</h2>
-  <p class="lead-small">
-    Комплексное сопровождение — от консультации до полного разрешения ситуации,
-    включая военно‑правовые вопросы.
-  </p>
-
-  <div class="services">
-    <!-- ---------- Одна карточка ---------- -->
-    <a href="#" class="service-card">
-      <div class="service">
-        <img src="assets/service1.jpg" alt="Юридические консультации" class="service-img">
+  <section id="services">
+    <h2>Юридические услуги</h2>
+    <p class="lead-small">Комплексное сопровождение — от консультации до полного разрешения ситуации, включая военно‑правовые вопросы.</p>
+    <div class="services">
+      <div class="card service">
+        <img src="assets/service1.jpg" alt="Юридические консультации">
         <strong>Юридические консультации</strong>
-        <p class="lead-small">
-          Очные и дистанционные консультации, правовой анализ, включая военнослужащих и контракт СВО.
-        </p>
+        <p class="lead-small">Очные и дистанционные консультации, правовой анализ, включая военнослужащих и контракт СВО.</p>
       </div>
-    </a>
-
-    <a href="#" class="service-card">
-      <div class="service">
-        <img src="assets/service2.jpg" alt="Судебная защита" class="service-img">
+      <div class="card service">
+        <img src="assets/service2.jpg" alt="Судебная защита">
         <strong>Судебная защита</strong>
-        <p class="lead-small">
-          Представительство в судах всех инстанций, включая споры по контрактной службе.
-        </p>
+        <p class="lead-small">Представительство в судах всех инстанций, включая споры по контрактной службе.</p>
       </div>
-    </a>
-
-    <a href="#" class="service-card">
-      <div class="service">
-        <img src="assets/service3.jpg" alt="Договорное право" class="service-img">
+      <div class="card service">
+        <img src="assets/service3.jpg" alt="Договорное право">
         <strong>Договорное право</strong>
-        <p class="lead-small">
-          Разработка, проверка, сопровождение сделок.
-        </p>
+        <p class="lead-small">Разработка, проверка, сопровождение сделок.</p>
       </div>
-    </a>
-
-    <!-- … остальные услуги … -->
-  </div>
-</section>
+      <div class="card service">
+        <img src="assets/service4.jpg" alt="Семейные споры">
+        <strong>Семейные споры</strong>
+        <p class="lead-small">Разводы, алименты, раздел имущества.</p>
+      </div>
+      <div class="card service">
+        <img src="assets/service5.jpg" alt="Наследственные дела">
+        <strong>Наследственные дела</strong>
+        <p class="lead-small">Вступление в наследство, споры, защита долей.</p>
+      </div>
+      <div class="card service">
+        <img src="assets/service6.jpg" alt="Бизнес‑сопровождение">
+        <strong>Бизнес‑сопровождение</strong>
+        <p class="lead-small">Абонентское юридическое обслуживание компаний.</p>
+      </div>
+    </div>
+  </section>
 
   <!-- =========================
-       КАРУСЕЛЬ (один диплом в мобильной версии)
+       КАРУСЕЛЬ (сертификаты и дипломы)
   ========================== -->
   <section id="trust">
     <h2>Наши сертификаты и дипломы</h2>
+
+    <!-- Десктоп / планшет (≥ 521px) -->
     <div class="carousel-container">
       <div class="carousel-track" id="carouselTrack">
         <div class="carousel-item"><div class="card"><img src="assets/diplom1.jpg" alt="Диплом 1"></div></div>
@@ -715,13 +655,18 @@
         <div class="carousel-item"><div class="card"><img src="assets/diplom5.jpg" alt="Диплом 5"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom6.jpg" alt="Диплом 6"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom7.jpg" alt="Диплом 7"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplом8.jpg" alt="Диплом 8"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplом9.jpg" alt="Диплом 9"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplом10.jpg" alt="Диплом 10"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplom8.jpg" alt="Диплом 8"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplom9.jpg" alt="Диплом 9"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplom10.jpg" alt="Диплом 10"></div></div>
       </div>
       <button class="carousel-nav prev" id="carouselPrev" aria-label="Предыдущий">‹</button>
       <button class="carousel-nav next" id="carouselNext" aria-label="Следующий">›</button>
       <div class="carousel-controls" id="carouselDots"></div>
+    </div>
+
+    <!-- Моб. версия (≤ 520px) – один центрированный диплом -->
+    <div class="mobile-diploma">
+      <img src="assets/diplom1.jpg" alt="Диплом">
     </div>
   </section>
 
@@ -858,7 +803,7 @@
 </div>
 
 <!-- =========================
-     J S (бургер, карусель, форма)
+     JS (бургер, карусель, форма)
 ========================= -->
 <script>
 /* -------------------------------------------------
@@ -870,11 +815,14 @@ const overlay  = document.getElementById('menuOverlay');
 
 if (burger && menu && overlay) {
   const toggleMenu = () => {
+    const expanded = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', !expanded);
     burger.classList.toggle('active');
     menu.classList.toggle('active');
     overlay.classList.toggle('active');
   };
   const closeMenu = () => {
+    burger.setAttribute('aria-expanded', 'false');
     burger.classList.remove('active');
     menu.classList.remove('active');
     overlay.classList.remove('active');
@@ -905,7 +853,7 @@ if (burger && menu && overlay) {
 
   if (!track || !prevBtn || !nextBtn || !dots || !container) return;
 
-  const originalHTML = track.innerHTML;          // сохраняем «чистый» набор
+  const originalHTML = track.innerHTML;          // исходный набор
   let realItemsCount = 0;
   let realGroups = 0;
   let totalGroups = 0;
@@ -915,10 +863,9 @@ if (burger && menu && overlay) {
   let velocity = 0, lastX = 0, lastTime = 0;
   let curPos = 0;
 
-  // сколько элементов одновременно видно
   const visibleCount = () => {
-    if (window.innerWidth <= 520) return 1;     // <‑‑ теперь один диплом
-    if (window.innerWidth <= 900) return 2;
+    if (window.innerWidth <= 520) return 1;
+    if (window.innerWidth <= 900)  return 2;
     return 3;
   };
   const getGap = () => {
@@ -934,14 +881,13 @@ if (burger && menu && overlay) {
   };
   const translateFor = (groupIdx) => groupIdx * slideWidth();
 
-  // ----------------- построение клонов -----------------
   const buildCarousel = () => {
     track.innerHTML = originalHTML;
     const visible = visibleCount();
     const realItems = Array.from(track.children);
     realItemsCount = realItems.length;
     realGroups = Math.ceil(realItemsCount / visible);
-    totalGroups = realGroups + 2;                // клоны слева и справа
+    totalGroups = realGroups + 2; // клоны слева и справа
 
     // prepend (левый клон)
     for (let i = realItemsCount - visible; i < realItemsCount; i++) {
@@ -959,7 +905,6 @@ if (burger && menu && overlay) {
     update(false);
   };
 
-  // ----------------- рендер точек -----------------
   const renderDots = () => {
     dots.innerHTML = '';
     for (let i = 0; i < realGroups; i++) {
@@ -971,23 +916,19 @@ if (burger && menu && overlay) {
     }
   };
 
-  // ----------------- обновление -----------------
   const update = (smooth = true) => {
     track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
     const maxTranslate = track.scrollWidth - track.parentElement.offsetWidth;
     const tr = Math.min(translateFor(idx), maxTranslate);
     track.style.transform = `translateX(-${tr}px)`;
-
     const dotEls = dots.querySelectorAll('.carousel-dot');
     dotEls.forEach((dot, i) => dot.classList.toggle('active', i === idx - 1));
   };
 
-  // ----------------- навигация -----------------
   const goTo = (dotIdx) => { idx = dotIdx + 1; update(true); };
   const next = () => { idx++; update(true); };
   const prev = () => { idx--; update(true); };
 
-  // ----------------- drag (pointer) -----------------
   const startDrag = (e) => {
     if (e.button && e.button !== 0) return;
     dragging = true;
@@ -1031,7 +972,7 @@ if (burger && menu && overlay) {
     const inertia = velocity * 200;
     const projected = curPos + inertia;
 
-    let newIdx = Math.round(projected / sw) + 1; // +1 – смещение на клон
+    let newIdx = Math.round(projected / sw) + 1; // +1 – сдвиг на клон
 
     if (newIdx <= 0) newIdx = totalGroups - 2;
     if (newIdx >= totalGroups - 1) newIdx = 1;
@@ -1040,16 +981,16 @@ if (burger && menu && overlay) {
     update(true);
   };
 
-  // ----------------- «кольцевой» переход -----------------
+  // «кольцевой» переход
   track.addEventListener('transitionend', () => {
-    if (idx === totalGroups - 1) { // правый клон
+    if (idx === totalGroups - 1) { // правая граница (правый клон)
       idx = 1;
       track.style.transition = 'none';
       update(false);
       void track.offsetWidth;
       track.style.transition = '';
     }
-    if (idx === 0) { // левый клон
+    if (idx === 0) { // левая граница (левый клон)
       idx = totalGroups - 2;
       track.style.transition = 'none';
       update(false);
@@ -1058,7 +999,7 @@ if (burger && menu && overlay) {
     }
   });
 
-  // ----------------- инициализация и ресайз -----------------
+  // Инициализация и ресайз
   buildCarousel();
   let resizeTimer;
   window.addEventListener('resize', () => {
@@ -1066,17 +1007,17 @@ if (burger && menu && overlay) {
     resizeTimer = setTimeout(buildCarousel, 250);
   });
 
-  // обработчики drag
+  // Drag‑события
   track.addEventListener('pointerdown', startDrag);
   track.addEventListener('pointermove', onDrag);
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
 
-  // кнопки
+  // Кнопки
   prevBtn.addEventListener('click', prev);
   nextBtn.addEventListener('click', next);
 
-  // автопрокрутка (пауза при перетаскивании)
+  // Автопрокрутка (пауза при наведении)
   let autoplay = setInterval(() => { if (!dragging) next(); }, 5000);
   container.addEventListener('mouseenter', () => clearInterval(autoplay));
   container.addEventListener('mouseleave', () => {
@@ -1101,9 +1042,12 @@ function openModal(p) {
   payload = p;
   consentChk.checked = false;
   consentModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
-function closeModal(){ consentModal.classList.remove('active'); }
-
+function closeModal(){ 
+  consentModal.classList.remove('active'); 
+  document.body.style.overflow = '';
+}
 consentCancel.addEventListener('click', closeModal);
 consentModal.addEventListener('click', e => { if (e.target === consentModal) closeModal(); });
 
@@ -1116,6 +1060,14 @@ form.addEventListener('submit', e => {
 
   if (!name || !phone || !city) {
     formStatus.textContent = 'Пожалуйста, заполните все обязательные поля.';
+    formStatus.style.color = 'red';
+    return;
+  }
+
+  // простая проверка формата телефона (дополнительно можно улучшить)
+  const phonePattern = /^\+7\s?\(\d{3}\)\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/;
+  if (!phonePattern.test(phone)) {
+    formStatus.textContent = 'Введите телефон в формате +7 (999) 123‑45‑67';
     formStatus.style.color = 'red';
     return;
   }
