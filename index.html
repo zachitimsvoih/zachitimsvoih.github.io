@@ -129,10 +129,10 @@
       border-radius:14px;
       border:1px solid var(--border);
       box-shadow:0 8px 22px rgba(0,0,0,.04);
-      overflow-wrap:break-word;      /* перенос long‑words */
+      overflow-wrap:break-word;      /* перенос длинных слов */
     }
 
-    /* убираем лишний фон/отступы у карточках внутри карусели */
+    /* убираем фон и паддинги у карточках внутри карусели */
     .carousel-item .card { background:transparent; padding:0; border:none; box-shadow:none; }
 
     .hero aside {
@@ -176,7 +176,7 @@
     .review-rating { color:#c2a14d; font-size:18px; }
 
     /* -------------------------------------------------
-       КАРУСЕЛЬ (бесконечный, без подпсей)
+       КАРУСЕЛЬ (бесконечный, без подписей)
        ------------------------------------------------- */
     .carousel-container {
       position:relative;
@@ -196,7 +196,7 @@
 
     .carousel-track {
       display:flex;
-      gap:18px;
+      gap:18px;                     /* будет переопределено в мобильных запросах */
       transition:transform .3s cubic-bezier(.25,.46,.45,.94);
       will-change:transform;
     }
@@ -204,13 +204,13 @@
 
     .carousel-item {
       flex-shrink:0;
-      min-width:0;               /* ширина будет рассчитываться в JS */
+      min-width:0;                 /* ширина задаётся в JS */
     }
     .carousel-item img {
       width:100%;
       max-width:100%;
       height:auto;
-      max-height:500px;          /* десктоп */
+      max-height:500px;            /* десктоп */
       object-fit:contain;
       border-radius:8px;
       display:block;
@@ -252,14 +252,14 @@
 
     /* ---- медиазапросы для карусели ---- */
     @media (max-width:900px) {
-      .carousel-nav { display:none; }
+      .carousel-nav { display:none; }               /* стрелки только на десктопе */
       .carousel-item img { max-height:400px; }
     }
     @media (max-width:520px) {
-      .carousel-item { min-width:100%; }            /* 2‑диплома */
+      .carousel-item { min-width:100%; }            /* один элемент занимает всю ширину */
       .carousel-item img { max-height:300px; }
       .carousel-controls { display:none; }
-      .carousel-track { gap:12px; }                 /* небольшой отступ между двумя дипломами */
+      .carousel-track { gap:0; }                    /* убираем промежуток – центрируем */
     }
 
     /* -------------------------------------------------
@@ -322,7 +322,7 @@
     @media (max-width:900px) {
       .hero { grid-template-columns:1fr; gap:24px; }
       .services { grid-template-columns:repeat(2,1fr); }
-      .cols { grid-template-columns:1fr; }               /* все двойные колонки (Контакты, О компании) становятся одной */
+      .cols { grid-template-columns:1fr; }       /* все двойные колонки переходят в одну */
       .burger { display:block; }
       nav.menu{
         display:none;
@@ -621,7 +621,7 @@
   </section>
 
   <!-- =========================
-       КАРУСЕЛЬ (2 диплома в мобильной версии)
+       КАРУСЕЛЬ (один диплом в мобильной версии)
   ========================== -->
   <section id="trust">
     <h2>Наши сертификаты и дипломы</h2>
@@ -634,9 +634,9 @@
         <div class="carousel-item"><div class="card"><img src="assets/diplom5.jpg" alt="Диплом 5"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom6.jpg" alt="Диплом 6"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom7.jpg" alt="Диплом 7"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplom8.jpg" alt="Диплом 8"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplom9.jpg" alt="Диплом 9"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplom10.jpg" alt="Диплом 10"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplом8.jpg" alt="Диплом 8"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplом9.jpg" alt="Диплом 9"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplом10.jpg" alt="Диплом 10"></div></div>
       </div>
       <button class="carousel-nav prev" id="carouselPrev" aria-label="Предыдущий">‹</button>
       <button class="carousel-nav next" id="carouselNext" aria-label="Следующий">›</button>
@@ -653,7 +653,7 @@
       <div class="card">
         <h3 style="font-size:20px;font-weight:700;color:var(--accent);margin:0 0 16px;">LegalFortConsulting</h3>
         <p class="lead-small" style="margin-bottom:16px;">Команда практикующих юристов с многолетним опытом работы в различных областях права. Мы специализируемся на предоставлении комплексной юридической помощи частным лицам, бизнесу и военнослужащим.</p>
-        <p class="lead-small" style="margin-bottom:16px;">Наша миссия — обеспечить надежную правовую защиту и сопровождение наших клиентов на всех этапах решения их правовых вопросов.</p>
+        <p class="lead-small" style="margin-bottom:16px;">Наша миссия — обеспечить надёжную правовую защиту и сопровождение наших клиентов на всех этапах решения их правовых вопросов.</p>
         <div style="margin-top:20px;">
           <strong style="color:var(--accent);display:block;margin-bottom:12px;">Наши преимущества:</strong>
           <ul style="margin:0;padding-left:20px;color:var(--text);line-height:1.8;">
@@ -777,7 +777,7 @@
 </div>
 
 <!-- =========================
-     JS (бургер, карусель, форма)
+     J S (бургер, карусель, форма)
 ========================= -->
 <script>
 /* -------------------------------------------------
@@ -834,7 +834,12 @@ if (burger && menu && overlay) {
   let velocity = 0, lastX = 0, lastTime = 0;
   let curPos = 0;
 
-  const visibleCount = () => (window.innerWidth <= 520 ? 2 : (window.innerWidth <= 900 ? 2 : 3));
+  // сколько элементов одновременно видно
+  const visibleCount = () => {
+    if (window.innerWidth <= 520) return 1;     // <‑‑ теперь один диплом
+    if (window.innerWidth <= 900) return 2;
+    return 3;
+  };
   const getGap = () => {
     const style = getComputedStyle(track);
     return parseFloat(style.columnGap) || 0;
@@ -848,6 +853,7 @@ if (burger && menu && overlay) {
   };
   const translateFor = (groupIdx) => groupIdx * slideWidth();
 
+  // ----------------- построение клонов -----------------
   const buildCarousel = () => {
     track.innerHTML = originalHTML;
     const visible = visibleCount();
@@ -872,6 +878,7 @@ if (burger && menu && overlay) {
     update(false);
   };
 
+  // ----------------- рендер точек -----------------
   const renderDots = () => {
     dots.innerHTML = '';
     for (let i = 0; i < realGroups; i++) {
@@ -883,6 +890,7 @@ if (burger && menu && overlay) {
     }
   };
 
+  // ----------------- обновление -----------------
   const update = (smooth = true) => {
     track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
     const maxTranslate = track.scrollWidth - track.parentElement.offsetWidth;
@@ -893,10 +901,12 @@ if (burger && menu && overlay) {
     dotEls.forEach((dot, i) => dot.classList.toggle('active', i === idx - 1));
   };
 
+  // ----------------- навигация -----------------
   const goTo = (dotIdx) => { idx = dotIdx + 1; update(true); };
   const next = () => { idx++; update(true); };
   const prev = () => { idx--; update(true); };
 
+  // ----------------- drag (pointer) -----------------
   const startDrag = (e) => {
     if (e.button && e.button !== 0) return;
     dragging = true;
@@ -910,7 +920,6 @@ if (burger && menu && overlay) {
     container.style.cursor = 'grabbing';
     track.setPointerCapture(e.pointerId);
   };
-
   const onDrag = (e) => {
     if (!dragging) return;
     const curX = e.clientX;
@@ -929,7 +938,6 @@ if (burger && menu && overlay) {
     track.style.transform = `translateX(-${newPos}px)`;
     curPos = newPos;
   };
-
   const endDrag = (e) => {
     if (!dragging) return;
     dragging = false;
@@ -942,7 +950,7 @@ if (burger && menu && overlay) {
     const inertia = velocity * 200;
     const projected = curPos + inertia;
 
-    let newIdx = Math.round(projected / sw) + 1; // +1 смещение на клон
+    let newIdx = Math.round(projected / sw) + 1; // +1 – смещение на клон
 
     if (newIdx <= 0) newIdx = totalGroups - 2;
     if (newIdx >= totalGroups - 1) newIdx = 1;
@@ -951,15 +959,16 @@ if (burger && menu && overlay) {
     update(true);
   };
 
+  // ----------------- «кольцевой» переход -----------------
   track.addEventListener('transitionend', () => {
-    if (idx === totalGroups - 1) {
+    if (idx === totalGroups - 1) { // правый клон
       idx = 1;
       track.style.transition = 'none';
       update(false);
       void track.offsetWidth;
       track.style.transition = '';
     }
-    if (idx === 0) {
+    if (idx === 0) { // левый клон
       idx = totalGroups - 2;
       track.style.transition = 'none';
       update(false);
@@ -968,22 +977,21 @@ if (burger && menu && overlay) {
     }
   });
 
-  // Инициализация
+  // ----------------- инициализация и ресайз -----------------
   buildCarousel();
-
-  // ресайз
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(buildCarousel, 250);
   });
 
-  // Обработчики
+  // обработчики drag
   track.addEventListener('pointerdown', startDrag);
   track.addEventListener('pointermove', onDrag);
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
 
+  // кнопки
   prevBtn.addEventListener('click', prev);
   nextBtn.addEventListener('click', next);
 
