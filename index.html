@@ -61,7 +61,7 @@
       width: 120px;
       height: 120px;
       border-radius: 12px;
-      overflow:hidden;               /* сохраняем скруглённые углы */
+      overflow:hidden;
       background:#fff;
       display:flex;
       align-items:center;
@@ -163,7 +163,7 @@
     .review-rating { color:#c2a14d; font-size:18px; }
 
     /* -------------------------------------------------
-       КАРУСЕЛЬ (дипломы) – без подписей
+       КАРУСЕЛЬ (дипломы) – бесконечный
        ------------------------------------------------- */
     .carousel-container {
       position:relative;
@@ -178,14 +178,13 @@
 
     .carousel-track {
       display:flex;
-      gap:18px;
+      /* gap будет вычислен в скрипте, чтобы корректно работать с клоунами */
       transition:transform .3s cubic-bezier(.25,.46,.45,.94);
       will-change:transform;
     }
     .carousel-track.dragging { transition:none; cursor:grabbing; }
 
     .carousel-item {
-      min-width:calc(33.333% - 12px);
       flex-shrink:0;
     }
     .carousel-item img {
@@ -235,12 +234,10 @@
     /* ---- медиазапросы для карусели ---- */
     @media (max-width:900px) {
       .carousel-nav { display:none; }               /* стрелки только на десктопе */
-      .carousel-item { min-width:calc(50% - 9px); }
       .carousel-item img { max-height:400px; }
     }
     @media (max-width:520px) {
-      .carousel-item { min-width:100%; }
-      .carousel-item img { max-height:300px; }      /* увеличил высоту для мобильных */
+      .carousel-item img { max-height:300px; }      /* чуть выше, чтобы выглядело красиво */
       .carousel-controls { display:none; }          /* точки не нужны, показывается один слайд */
     }
 
@@ -609,7 +606,7 @@
   </section>
 
   <!-- =========================
-       КАРУСЕЛЬ СЕРТИФИКАТОВ
+       КАРУСЕЛЬ СЕРТИФИКАТОВ (бесконечный)
   ========================== -->
   <section id="trust">
     <h2>Наши сертификаты и дипломы</h2>
@@ -621,7 +618,7 @@
         <div class="carousel-item"><div class="card"><img src="assets/diplom4.jpg" alt="Диплом 4"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom5.jpg" alt="Диплом 5"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom6.jpg" alt="Диплом 6"></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplom7.jpg" alt="Диплом 7"></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplom7.jpg" alt="Диплол 7"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom8.jpg" alt="Диплом 8"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom9.jpg" alt="Диплом 9"></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom10.jpg" alt="Диплом 10"></div></div>
@@ -804,7 +801,7 @@ if (burger && menu && overlay) {
 }
 
 /* -------------------------------------------------
-   2️⃣ Карусель (дипломы) – drag + autoplay
+   2️⃣ Карусель (дипломы) – бесконечный, drag + autoplay
    ------------------------------------------------- */
 (function() {
   const track   = document.getElementById('carouselTrack');
@@ -815,9 +812,12 @@ if (burger && menu && overlay) {
 
   if (!track || !prevBtn || !nextBtn || !dots || !container) return;
 
-  const items = track.querySelectorAll('.carousel-item');
-  const total = items.length;
-  let idx = 0;                         // текущий слайд
+  const originalHTML = track.innerHTML;          // запомним «чистый» набор элементов
+  let realItemsCount = 0;                        // количество реальных карточек
+  let realGroups = 0;                           // количество групп (слайда) без клонов
+  let totalGroups = 0;                           // groups + клоны (плюс 2)
+  let idx = 1;                                   // текущий «групповой» индекс (1 = первая реальная группа)
+  let direction = 0;                             // -1 = назад, 1 = вперёд, 0 = без движения
 
   /* ---------- вспомогательные функции ---------- */
   const visibleCount = () => {
@@ -825,20 +825,56 @@ if (burger && menu && overlay) {
     if (window.innerWidth <= 900) return 2;
     return 3;
   };
-  const slidesCount = () => Math.ceil(total / visibleCount());
 
-  const translateFor = (i) => {
-    const visible = visibleCount();
-    const gap = 18;
-    const w = track.parentElement.offsetWidth;
-    const itemW = (w - gap * (visible - 1)) / visible;
-    return i * visible * (itemW + gap);
+  const getGap = () => {
+    const style = getComputedStyle(track);
+    const gap = parseFloat(style.columnGap) || 0;
+    return gap;
   };
 
+  const slideWidth = () => {
+    const visible = visibleCount();
+    const gap = getGap();
+    const containerW = track.parentElement.offsetWidth;
+    const itemW = (containerW - gap * (visible - 1)) / visible;
+    return itemW * visible + gap * (visible - 1);
+  };
+
+  const translateFor = (groupIdx) => groupIdx * slideWidth();
+
+  /* ---------- построение клоунов ---------- */
+  const buildCarousel = () => {
+    // возвращаем «чистый» набор
+    track.innerHTML = originalHTML;
+
+    const visible = visibleCount();
+    const realItems = Array.from(track.children);
+    realItemsCount = realItems.length;
+    realGroups   = Math.ceil(realItemsCount / visible);
+    totalGroups  = realGroups + 2;   // +2 — по одному «клоун‑группу» слева и справа
+
+    // ----- prepend (левый клоун) -----
+    for (let i = realItemsCount - visible; i < realItemsCount; i++) {
+      const clone = realItems[i].cloneNode(true);
+      track.insertBefore(clone, track.firstChild);
+    }
+    // ----- append (правый клоун) -----
+    for (let i = 0; i < visible; i++) {
+      const clone = realItems[i].cloneNode(true);
+      track.appendChild(clone);
+    }
+
+    // начальная позиция – первая реальная группа
+    idx = 1;
+    direction = 0;
+    renderDots();
+    update(false);
+  };
+
+  /* ---------- рендер точек ---------- */
   const renderDots = () => {
     dots.innerHTML = '';
-    const s = slidesCount();
-    for (let i = 0; i < s; i++) {
+    for (let i = 0; i < realGroups; i++) {
       const dot = document.createElement('button');
       dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
       dot.setAttribute('aria-label', `Перейти к слайду ${i + 1}`);
@@ -847,20 +883,32 @@ if (burger && menu && overlay) {
     }
   };
 
+  /* ---------- обновление визуала ---------- */
   const update = (smooth = true) => {
     track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
-    const tr = translateFor(idx);
-    track.style.transform = `translateX(-${tr}px)`;
-    dots.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    track.style.transform = `translateX(-${translateFor(idx)}px)`;
+
+    // активная точка
+    const dotEls = dots.querySelectorAll('.carousel-dot');
+    dotEls.forEach((dot, i) => dot.classList.toggle('active', i === idx - 1));
   };
 
-  const goTo = (i) => {
-    const max = slidesCount() - 1;
-    idx = Math.max(0, Math.min(i, max));
+  /* ---------- переходы ---------- */
+  const goTo = (dotIdx) => {
+    direction = dotIdx + 1 > idx ? 1 : (dotIdx + 1 < idx ? -1 : 0);
+    idx = dotIdx + 1;            // +1 – смещение из‑за левого клоуна
     update(true);
   };
-  const next = () => goTo(idx + 1);
-  const prev = () => goTo(idx - 1);
+  const next = () => {
+    direction = 1;
+    idx++;
+    update(true);
+  };
+  const prev = () => {
+    direction = -1;
+    idx--;
+    update(true);
+  };
 
   /* ---------- drag‑логика ---------- */
   let dragging = false, startX = 0, startPos = 0,
@@ -900,6 +948,10 @@ if (burger && menu && overlay) {
     const diff = curX - startX;
     curPos = startPos - diff;
 
+    // ограничиваем скольжующее поле, иначе будет пустое место
+    const maxTranslate = track.scrollWidth - track.parentElement.offsetWidth;
+    curPos = Math.max(0, Math.min(curPos, maxTranslate));
+
     const now = Date.now();
     const dt = now - lastTime;
     if (dt > 0) velocity = (curX - lastX) / dt;
@@ -921,46 +973,54 @@ if (burger && menu && overlay) {
     document.removeEventListener('touchmove', onDrag);
     document.removeEventListener('touchend', endDrag);
 
-    const visible = visibleCount();
-    const w = track.parentElement.offsetWidth;
-    const gap = 18;
-    const itemW = (w - gap * (visible - 1)) / visible;
-    const slideW = visible * (itemW + gap);
-    const threshold = slideW * 0.3;
-    const inertia = velocity * 200;
+    const sw = slideWidth();
+    const threshold = sw * 0.3;               // когда переключать слайд
+    const inertia = velocity * 200;          // небольшая «инерция»
     const projected = curPos + inertia;
 
-    let newIdx = Math.round(projected / slideW);
-    const maxIdx = slidesCount() - 1;
-    newIdx = Math.max(0, Math.min(newIdx, maxIdx));
+    let newIdx = Math.round(projected / sw);
+    // делаем «кольцевой» переход
+    if (newIdx <= 0)      newIdx = totalGroups - 2;   // последний реальный
+    if (newIdx >= totalGroups - 1) newIdx = 1;       // первый реальный
 
-    const diffFromCurrent = curPos - translateFor(idx);
-    if (Math.abs(diffFromCurrent) > threshold) {
-      newIdx = diffFromCurrent > 0 ? Math.min(idx + 1, maxIdx)
-                                    : Math.max(idx - 1, 0);
-    } else {
-      newIdx = idx;
-    }
-
+    direction = newIdx > idx ? 1 : -1;
     idx = newIdx;
     update(true);
   };
 
-  /* ---------- инициализация ---------- */
-  renderDots();
-  update();
+  /* ---------- завершение анимации (переход к реальному слайду) ---------- */
+  track.addEventListener('transitionend', () => {
+    // если попали на клоун‑группу справа
+    if (idx === totalGroups - 1) {
+      idx = 1;                         // первый реальный
+      track.style.transition = 'none';
+      update(false);
+      void track.offsetWidth;          // принудительный reflow
+      track.style.transition = '';
+    }
+    // если попали на клоун‑группу слева
+    if (idx === 0) {
+      idx = totalGroups - 2;           // последний реальный
+      track.style.transition = 'none';
+      update(false);
+      void track.offsetWidth;
+      track.style.transition = '';
+    }
+  });
 
-  // ресайз – пересчёт количества видимых элементов и точек
+  /* ---------- инициализация ---------- */
+  buildCarousel();
+
+  // ресайз – пересчитываем клоны и размеры
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => {
-      renderDots();
-      idx = 0;
-      update();
+      buildCarousel();
     }, 250);
   });
 
+  // обработчики
   container.addEventListener('mousedown', startDrag);
   container.addEventListener('touchstart', startDrag, {passive:true});
   prevBtn.addEventListener('click', prev);
