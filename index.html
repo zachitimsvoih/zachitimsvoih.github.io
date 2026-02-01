@@ -166,7 +166,7 @@
     .cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
 
-    .phone { font-weight:800; color:var(--accent); }
+    .phone { font-weight:800; color:var(--accent); text-decoration:none; }
     .lead-small { color:var(--muted); font-size:15px; }
 
     form input, form textarea {
@@ -197,6 +197,11 @@
       cursor:grab;
       user-select:none;
       touch-action:none;
+      transition:transform .2s ease;
+    }
+    .carousel-container:hover {
+      cursor:pointer;               /* меняем курсор при наведении */
+      transform:scale(1.02);        /* лёгкое увеличение – визуальная подсказка */
     }
     .carousel-container:active { cursor:grabbing; }
 
@@ -258,13 +263,18 @@
 
     /* ---- медиазапросы для карусели ---- */
     @media (max-width:900px) {
-      .carousel-nav { display:none; }               /* стрелки только на десктопе */
+      .carousel-nav { display:none; }
       .carousel-item img { max-height:400px; }
     }
     @media (max-width:520px) {
-      .carousel-item { min-width:100%; }            /* один элемент — вся ширина */
+      /* Один элемент на весь экран */
+      .carousel-item {
+        flex:0 0 100%;      /* фиксированная ширина = ширина контейнера */
+        min-width:100%;
+      }
       .carousel-item img { max-height:300px; }
-      .carousel-track { gap:0; }                    /* убираем промежуток между элементами */
+      .carousel-controls { display:none; }
+      .carousel-track { gap:0; }   /* убираем промежуток между элементами */
     }
 
     /* -------------------------------------------------
@@ -559,7 +569,7 @@
     <!-- Боковая карточка «Связаться с нами» -->
     <aside class="card">
       <div style="font-size:14px;color:var(--muted)">Связаться с нами</div>
-      <div class="phone" style="font-size:18px;margin:6px 0">+7 (999) 836‑54‑90</div>
+      <a class="phone" href="tel:+79998365490" style="font-size:18px;margin:6px 0">+7 (999) 836‑54‑90</a>
       <div class="lead-small">Telegram / WhatsApp</div>
       <hr style="margin:14px 0;border:none;border-top:1px solid var(--border)">
       <div class="lead-small">Режим работы</div>
@@ -720,7 +730,7 @@
           </div>
           <div style="display:flex;align-items:flex-start;gap:12px;">
             <strong style="color:var(--accent);min-width:90px;font-size:15px;">Телефон:</strong>
-            <span class="phone" style="font-size:17px;font-weight:700;">+7 (999) 836‑54‑90</span>
+            <a class="phone" href="tel:+79998365490" style="font-size:17px;font-weight:700;">+7 (999) 836‑54‑90</a>
           </div>
           <div style="display:flex;align-items:flex-start;gap:12px;">
             <strong style="color:var(--accent);min-width:90px;font-size:15px;">Email:</strong>
@@ -872,15 +882,18 @@ if (burger && menu && overlay) {
   let velocity = 0, lastX = 0, lastTime = 0;
   let curPos = 0;
 
+  /** количество видимых элементов в текущем брейкпоинте **/
   const visibleCount = () => {
-    if (window.innerWidth <= 520) return 1;      // мобильная версия – один элемент
+    if (window.innerWidth <= 520) return 1;      // мобильная – один слайд
     if (window.innerWidth <= 900)  return 2;
     return 3;
   };
+  /** возвращает текущий gap (модель flex-gap) **/
   const getGap = () => {
     const style = getComputedStyle(track);
     return parseFloat(style.columnGap) || 0;
   };
+  /** ширина одного «шага» (скольки пикселей нужно сдвинуть, чтобы перейти к следующей группе) **/
   const slideWidth = () => {
     const visible = visibleCount();
     const gap = getGap();
@@ -890,32 +903,38 @@ if (burger && menu && overlay) {
   };
   const translateFor = (groupIdx) => groupIdx * slideWidth();
 
-  // ----------------- построение клонов -----------------
+  /* -------------------------------------------------
+     Построение клонов (левый‑ и правый‑дубликаты)
+     ------------------------------------------------- */
   const buildCarousel = () => {
+    // 1️⃣ удаляем все клоны, возвращаем «чистый» html
     track.innerHTML = originalHTML;
+
     const visible = visibleCount();
     const realItems = Array.from(track.children);
     realItemsCount = realItems.length;
     realGroups = Math.ceil(realItemsCount / visible);
-    totalGroups = realGroups + 2; // клоны слева и справа
+    totalGroups = realGroups + 2;               // +2 – клоны слева/справа
 
-    // prepend (левый клон)
+    // 2️⃣ левый клон (последние "visible" элемента)
     for (let i = realItemsCount - visible; i < realItemsCount; i++) {
       const clone = realItems[i].cloneNode(true);
       track.insertBefore(clone, track.firstChild);
     }
-    // append (правый клон)
+    // 3️⃣ правый клон (первые "visible" элемента)
     for (let i = 0; i < visible; i++) {
       const clone = realItems[i].cloneNode(true);
       track.appendChild(clone);
     }
 
-    idx = 1;
+    idx = 1;                 // стартуем с первой «реальной» группы
     renderDots();
     update(false);
   };
 
-  // ----------------- рендер точек -----------------
+  /* -------------------------------------------------
+     Точки‑индикаторы
+     ------------------------------------------------- */
   const renderDots = () => {
     dots.innerHTML = '';
     for (let i = 0; i < realGroups; i++) {
@@ -927,7 +946,9 @@ if (burger && menu && overlay) {
     }
   };
 
-  // ----------------- обновление -----------------
+  /* -------------------------------------------------
+     Обновление положения
+     ------------------------------------------------- */
   const update = (smooth = true) => {
     track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
     const maxTranslate = track.scrollWidth - track.parentElement.offsetWidth;
@@ -938,12 +959,16 @@ if (burger && menu && overlay) {
     dotEls.forEach((dot, i) => dot.classList.toggle('active', i === idx - 1));
   };
 
-  // ----------------- навигация -----------------
+  /* -------------------------------------------------
+     Навигация
+     ------------------------------------------------- */
   const goTo = (dotIdx) => { idx = dotIdx + 1; update(true); };
   const next = () => { idx++; update(true); };
   const prev = () => { idx--; update(true); };
 
-  // ----------------- drag (pointer) -----------------
+  /* -------------------------------------------------
+     Drag (pointer‑events)
+     ------------------------------------------------- */
   const startDrag = (e) => {
     if (e.button && e.button !== 0) return;
     dragging = true;
@@ -985,8 +1010,7 @@ if (burger && menu && overlay) {
     const sw = slideWidth();
     const inertia = velocity * 200;
     const projected = curPos + inertia;
-
-    let newIdx = Math.round(projected / sw) + 1; // +1 — смещение на клон
+    let newIdx = Math.round(projected / sw) + 1; // +1 – смещение на клон
 
     if (newIdx <= 0) newIdx = totalGroups - 2;
     if (newIdx >= totalGroups - 1) newIdx = 1;
@@ -995,16 +1019,18 @@ if (burger && menu && overlay) {
     update(true);
   };
 
-  // ----------------- «кольцевой» переход -----------------
+  /* -------------------------------------------------
+     «Кольцевой» переход (перепрыгиваем с клонов на реальные)
+     ------------------------------------------------- */
   track.addEventListener('transitionend', () => {
-    if (idx === totalGroups - 1) { // правый клон
+    if (idx === totalGroups - 1) {            // правый клон
       idx = 1;
       track.style.transition = 'none';
       update(false);
-      void track.offsetWidth;
+      void track.offsetWidth;                // принудительный ререс.
       track.style.transition = '';
     }
-    if (idx === 0) { // левый клон
+    if (idx === 0) {                         // левый клон
       idx = totalGroups - 2;
       track.style.transition = 'none';
       update(false);
@@ -1013,7 +1039,9 @@ if (burger && menu && overlay) {
     }
   });
 
-  // ----------------- инициализация и ресайз -----------------
+  /* -------------------------------------------------
+     Инициализация + ресайз
+     ------------------------------------------------- */
   buildCarousel();
   let resizeTimer;
   window.addEventListener('resize', () => {
@@ -1021,17 +1049,23 @@ if (burger && menu && overlay) {
     resizeTimer = setTimeout(buildCarousel, 250);
   });
 
-  // Drag‑события
+  /* -------------------------------------------------
+     Обработчики drag
+     ------------------------------------------------- */
   track.addEventListener('pointerdown', startDrag);
   track.addEventListener('pointermove', onDrag);
   track.addEventListener('pointerup', endDrag);
   track.addEventListener('pointercancel', endDrag);
 
-  // Кнопки
+  /* -------------------------------------------------
+     Кнопки «вперёд/назад»
+     ------------------------------------------------- */
   prevBtn.addEventListener('click', prev);
   nextBtn.addEventListener('click', next);
 
-  // Автопрокрутка (пауза при наведении)
+  /* -------------------------------------------------
+     Автопрокрутка (пауза при перетаскивании)
+     ------------------------------------------------- */
   let autoplay = setInterval(() => { if (!dragging) next(); }, 5000);
   container.addEventListener('mouseenter', () => clearInterval(autoplay));
   container.addEventListener('mouseleave', () => {
@@ -1059,8 +1093,8 @@ function openModal(p) {
   consentModal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
-function closeModal(){ 
-  consentModal.classList.remove('active'); 
+function closeModal(){
+  consentModal.classList.remove('active');
   document.body.style.overflow = '';
 }
 consentCancel.addEventListener('click', closeModal);
@@ -1074,7 +1108,7 @@ form.addEventListener('submit', e => {
   const city   = form.source?.value.trim();
   const msg    = form.message?.value.trim() || '';
 
-  // Сбросим сообщения об ошибках
+  // Очистим прежние сообщения об ошибках
   phoneErrorEl.textContent = '';
   formStatus.textContent = '';
 
@@ -1084,6 +1118,7 @@ form.addEventListener('submit', e => {
     return;
   }
 
+  // ------- валидация телефона ----------
   const phonePattern = /^\+7\s?\(\d{3}\)\s?\d{3}[-\s]?\d{2}[-\s]?\d{2}$/;
   if (!phonePattern.test(phone)) {
     phoneErrorEl.textContent = 'Введите телефон в формате +7 (999) 123‑45‑67';
