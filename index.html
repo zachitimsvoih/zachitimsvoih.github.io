@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="yandex-verification" content="88fffa34a1577ac9" />
 
-  <!-- Заголовок страницы и мета‑описание для SEO -->
   <title>Военный юрист в Москве — бесплатная первичная консультация, контракты, выплаты | LegalFortConsulting</title>
   <meta name="description"
         content="Военный юрист в Москве. Бесплатная первичная консультация, помощь по контрактам, выплатам, увольнению и вопросам СВО. Конфиденциально. LegalFortConsulting">
@@ -14,33 +13,31 @@
        СТИЛИ (CSS)
        ========================= -->
   <style>
-    /* ---------------------------------
-       Базовые цвета и переменные
-       --------------------------------- */
+    /* ---------- Переменные ---------- */
     :root {
       --bg: #f4efe8;      /* фон страницы */
-      --card: #ffffff;   /* фон карточек */
-      --accent: #3a2f2a;  /* основной акцент (кнопки, ссылки) */
-      --muted: #6b625c;   /* вспомогательный (текст‑подзаголовки) */
+      --card: #ffffff;    /* фон карточек */
+      --accent: #3a2f2a;  /* основной акцент */
+      --muted: #6b625c;   /* вспомогательный цвет */
       --text: #1f1b18;    /* основной цвет текста */
       --border: #e3dbd2;  /* границы */
     }
 
-    /* Плавный скролл при кликах по якорям */
     html { scroll-behavior: smooth; }
-
     *, *::before, *::after { box-sizing: border-box; }
 
+    /* Отключаем горизонтальную полоску прокрутки, которая могла появиться из‑за фиксированных ширин */
     body {
       margin: 0;
       font-family: Inter, system-ui, 'Segoe UI', Roboto, Arial;
       line-height: 1.6;
       color: var(--text);
       background: var(--bg);
+      overflow-x: hidden;               /* <‑‑ важный момент */
     }
 
     /* -------------------------------------------------
-       Хедер (включает фиксированный бар и фон‑размытие)
+       ХЕДЕР (фикс‑бар + размытие)
        ------------------------------------------------- */
     header {
       background: rgba(244,239,232,0.9);
@@ -51,25 +48,24 @@
       border-bottom: 1px solid var(--border);
     }
 
-    .container { max-width: 1120px; margin: 0 auto; padding: 22px; }
+    .container { max-width:1120px; margin:0 auto; padding:22px; }
 
     /* -------------------------------------------------
-       Навигация (логотип, меню, бургер)
+       НАВИГАЦИЯ (логотип, меню, бургер)
        ------------------------------------------------- */
-    .nav { display: flex; justify-content: space-between; align-items: center; gap: 18px; position: relative; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .logo { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; background:#fff; display:flex; align-items:center; justify-content:center; }
-
+    .nav { display:flex; justify-content:space-between; align-items:center; gap:18px; position:relative; }
+    .brand { display:flex; align-items:center; gap:12px; }
+    .logo { width:120px; height:120px; border-radius:12px; overflow:hidden; background:#fff; display:flex; align-items:center; justify-content:center; }
     nav.menu a {
-      color: var(--muted);
-      text-decoration: none;
-      font-weight: 600;
-      margin-right: 12px;
+      color:var(--muted);
+      text-decoration:none;
+      font-weight:600;
+      margin-right:12px;
     }
-    nav.menu a:hover { color: var(--accent); }
+    nav.menu a:hover { color:var(--accent); }
 
     /* Бургер‑кнопка – видна только на мобильных */
-    .burger { display: none; background:none; border:none; cursor:pointer; padding:8px; position:relative; z-index:101; }
+    .burger { display:none; background:none; border:none; cursor:pointer; padding:8px; position:relative; z-index:101; }
     .burger span {
       display:block;
       width:26px; height:3px;
@@ -83,13 +79,13 @@
     .burger.active span:nth-child(3){ transform:rotate(-45deg) translate(5px,-5px); }
 
     /* -------------------------------------------------
-       Секции (общие отступы и стили заголовков)
+       СЕКЦИИ (общие отступы)
        ------------------------------------------------- */
     section { padding:36px 0; border-top:1px solid rgba(0,0,0,0.03); }
     h1,h2,h3 { letter-spacing:-0.2px; }
 
     /* -------------------------------------------------
-       Главный блок (hero)
+       HERO (главный блок)
        ------------------------------------------------- */
     .hero {
       display:grid;
@@ -104,21 +100,19 @@
     .btn { background:var(--accent); color:#fff; padding:13px 18px; border-radius:10px; border:0; cursor:pointer; font-weight:700; }
     .btn.ghost { background:transparent; color:var(--accent); border:2px solid var(--accent); }
 
-    /* Универсальная карточка – используется в hero, услугах, отзывах и т.д. */
-    .card { background:var(--card); padding:20px; border-radius:14px; border:1px solid var(--border); box-shadow:0 8px 22px rgba(0,0,0,0.04); }
+    /* Универсальная карточка */
+    .card { background:var(--card); padding:20px; border-radius:14px; border:1px solid var(--border); box-shadow:0 8px 22px rgba(0,0,0,.04); }
 
-    /* -----------------------------------------------------------------
-       Адаптация hero‑бокового блока (контактная карточка) под мобилу
-       ----------------------------------------------------------------- */
+    /* Правый блок hero (контактная карточка) – на мобильных 100 % ширины */
     .hero aside {
       flex:0 0 auto;
       width:100%;
-      max-width:350px;   /* ограничиваем ширину, чтобы не ломалась верстка */
+      max-width:350px;       /* ограничиваем ширину только на больших экранах */
       min-width:0;
     }
 
     /* -------------------------------------------------
-       Услуги (grid‑layout)
+       СЕРВИСЫ (grid‑layout)
        ------------------------------------------------- */
     .services { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
     .service { display:flex; flex-direction:column; }
@@ -128,20 +122,19 @@
     }
     .service strong { display:block; margin-bottom:6px; }
 
-    /* Двухколоночный блок (о компании, контакты) */
-    .cols { display:grid; grid-template-columns:1fr 1f; gap:18px; }
+    .cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
 
     .phone { font-weight:800; color:var(--accent); }
     .lead-small { color:var(--muted); font-size:15px; }
 
     form input, form textarea {
-      width:100%; padding:11px; border:1px solid var(--border);
-      border-radius:8px; margin-bottom:12px; font-family:inherit;
+      width:100%; padding:11px; border:1px solid var(--border); border-radius:8px; margin-bottom:12px; font-family:inherit;
     }
     form button { width:100%; }
 
     /* -------------------------------------------------
-       Отзывы (grid‑layout + стили карточек)
+       ОТЗЫВЫ
        ------------------------------------------------- */
     .reviews { padding:60px 0; }
     .reviews-title { text-align:center; font-size:32px; margin-bottom:40px; color:var(--accent); }
@@ -153,7 +146,7 @@
     .review-rating { color:#c2a14d; font-size:18px; }
 
     /* -------------------------------------------------
-       Карточка‑карусель (сертификаты, дипломы)
+       КАРУСЕЛЬ (дипломы)
        ------------------------------------------------- */
     .carousel-container {
       position:relative;
@@ -162,6 +155,7 @@
       margin-top:14px;
       cursor:grab;
       user-select:none;
+      touch-action:none;                 /* отключаем скролл браузера во время drag */
     }
     .carousel-container:active { cursor:grabbing; }
 
@@ -178,8 +172,10 @@
       flex-shrink:0;
     }
     .carousel-item img {
-      width:100%; max-width:100%; height:auto;
-      max-height:500px;
+      width:100%;
+      max-width:100%;
+      height:auto;
+      max-height:500px;                /* десктоп */
       object-fit:contain;
       border-radius:8px;
       display:block;
@@ -219,9 +215,21 @@
     .carousel-nav.prev { left:10px; }
     .carousel-nav.next { right:10px; }
 
-    /* ---------------------------------
-       Футер
-       --------------------------------- */
+    /* ---- медиазапросы для карусели ---- */
+    @media (max-width:900px) {
+      .carousel-nav { display:none; }               /* стрелки только на десктопе */
+      .carousel-item { min-width:calc(50% - 9px); }
+      .carousel-item img { max-height:400px; }
+    }
+    @media (max-width:520px) {
+      .carousel-item { min-width:100%; }
+      .carousel-item img { max-height:250px; }      /* уменьшили высоту на телефонах */
+      .carousel-controls { display:none; }          /* точки не нужны, показывается один слайд */
+    }
+
+    /* -------------------------------------------------
+       ФУТЕР
+       ------------------------------------------------- */
     footer {
       padding:40px 0;
       color:var(--muted);
@@ -258,13 +266,11 @@
       color:var(--text);
       font-weight:500;
       font-size:15px;
+      word-break:break-word;                /* <‑‑ важный момент */
     }
-    .footer-contact-value.phone {
-      font-weight:700;
-      color:var(--accent);
-      font-size:16px;
-    }
+    .footer-contact-value.phone { font-weight:700; color:var(--accent); font-size:16px; }
     .footer-contact-value a:hover { color:var(--accent); border-bottom-color:var(--accent); }
+
     .footer-bottom {
       padding-top:20px;
       border-top:1px solid var(--border);
@@ -275,15 +281,14 @@
       font-size:13px;
     }
 
-    /* ---------------------------------
-       Адаптивные стили (медиа‑запросы)
-       --------------------------------- */
+    /* -------------------------------------------------
+       АДАПТИВ
+       ------------------------------------------------- */
     @media (max-width:900px) {
       .hero { grid-template-columns:1fr; gap:24px; }
       .services { grid-template-columns:repeat(2,1fr); }
       .cols { grid-template-columns:1fr; }
       .burger { display:block; }
-
       nav.menu{
         display:none;
         position:absolute;
@@ -301,7 +306,7 @@
       nav.menu a{ padding:10px 12px; border-radius:8px; }
       nav.menu a:hover{ background:#f4efe8; }
 
-      /* полупрозрачный фон под открытым меню */
+      /* Оверлей под мобильным меню */
       #menuOverlay{
         display:none;
         position:fixed;
@@ -310,15 +315,26 @@
         z-index:99;
       }
       #menuOverlay.active{ display:block; }
+
+      /* Правый блок hero – теперь 100 % ширины */
+      .hero aside {
+        max-width:none;            /* убираем ограничение 350 px */
+        width:100%;
+        margin-top:20px;
+      }
+
+      /* Футер – одна колонка, переносим длинные строки */
+      .footer-content { grid-template-columns:1fr; }
     }
 
     @media (max-width:520px){
       .services { grid-template-columns:1fr; }
+      .footer-bottom { flex-direction:column; align-items:center; }
     }
 
-    /* ---------------------------------
-       Модальное окно согласия
-       --------------------------------- */
+    /* -------------------------------------------------
+       МОДАЛЬНОЕ ОКНО СОГЛАСИЯ
+       ------------------------------------------------- */
     .modal-overlay{
       display:none;
       position:fixed;
@@ -341,6 +357,7 @@
       overflow-y:auto;
       box-shadow:0 20px 60px rgba(0,0,0,.3);
       animation:modalSlideIn .3s ease-out;
+      position:relative;
     }
     @keyframes modalSlideIn{
       from{opacity:0; transform:translateY(-20px);}
@@ -397,13 +414,7 @@
       color:#fff;
     }
 
-    /* небольшие правки для футера на очень маленьких экранах */
-    @media (max-width:600px){
-      .footer-content{font-size:13px;}
-      .footer-contact-value a{border-bottom:none;}
-    }
-
-    /* статус‑сообщение в форме – не вылезать за пределы */
+    /* ---- небольшая правка, чтобы статус‑сообщение внутри формы не «вываливалось» ---- */
     #form-status{
       word-break:break-word;
       max-width:100%;
@@ -414,17 +425,16 @@
 <body>
 
 <!-- =========================
-     Оверлей для мобильного меню (полупрозрачный фон)
+     Оверлей для мобильного меню
 ========================= -->
 <div id="menuOverlay"></div>
 
 <!-- =========================
-     ХЕДЕР (логотип + навигация)
+     HEADER (логотип + навигация)
 ========================= -->
 <header>
   <div class="container nav">
     <div class="brand">
-      <!-- Логотип -->
       <div class="logo"><img src="assets/logo.jpg" alt="LegalFortConsulting"></div>
       <div>
         <div style="font-weight:800">LegalFortConsulting</div>
@@ -432,7 +442,7 @@
       </div>
     </div>
 
-    <!-- Бургер‑кнопка (видна только на маленьких экранах) -->
+    <!-- Бургер‑кнопка -->
     <button class="burger" id="burgerBtn" aria-label="Открыть меню">
       <span></span><span></span><span></span>
     </button>
@@ -581,7 +591,6 @@
     <h2>Наши сертификаты и дипломы</h2>
     <div class="carousel-container">
       <div class="carousel-track" id="carouselTrack">
-        <!-- Каждый элемент – отдельный диплом/сертификат -->
         <div class="carousel-item"><div class="card"><img src="assets/diplom1.jpg" alt="Диплом 1"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom2.jpg" alt="Диплом 2"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom3.jpg" alt="Диплом 3"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
@@ -590,8 +599,8 @@
         <div class="carousel-item"><div class="card"><img src="assets/diplom6.jpg" alt="Диплом 6"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom7.jpg" alt="Диплом 7"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
         <div class="carousel-item"><div class="card"><img src="assets/diplom8.jpg" alt="Диплом 8"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplом9.jpg" alt="Диплом 9"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
-        <div class="carousel-item"><div class="card"><img src="assets/diplом10.jpg" alt="Диплом 10"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplom9.jpg" alt="Диплом 9"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
+        <div class="carousel-item"><div class="card"><img src="assets/diplom10.jpg" alt="Диплом 10"><p class="lead-small" style="margin-top:12px;">Диплом / сертификат</p></div></div>
       </div>
       <button class="carousel-nav prev" id="carouselPrev" aria-label="Предыдущий">‹</button>
       <button class="carousel-nav next" id="carouselNext" aria-label="Следующий">›</button>
@@ -630,7 +639,7 @@
   </section>
 
   <!-- =========================
-       КОНТАКТЫ + ФОРМА ЗАЯВКИ
+       КОНТАКТЫ + ФОРМА
   ========================== -->
   <section id="contacts">
     <h2>Контакты</h2>
@@ -669,7 +678,7 @@
 </main>
 
 <!-- =========================
-     Футер (контакты + информация о компании)
+     FOOTER
 ========================= -->
 <footer>
   <div class="container">
@@ -708,7 +717,7 @@
 </footer>
 
 <!-- =========================
-     Модальное окно согласия на обработку ПД
+     МОДАЛЬНОЕ ОКНО (согласие)
 ========================= -->
 <div class="modal-overlay" id="consentModal">
   <div class="modal">
@@ -732,315 +741,300 @@
 </div>
 
 <!-- =========================
-     Скрипты (JS)
+     J S (бургер, карусель, форма)
 ========================= -->
 <script>
-  /* -------------------------------------------------
-     1️⃣ Бургер‑меню + плавный скролл к якорям
-     ------------------------------------------------- */
-  const burger   = document.querySelector('.burger');
-  const menu     = document.querySelector('nav.menu');
-  const overlay  = document.getElementById('menuOverlay');
+/* -------------------------------------------------
+   1️⃣ Бургер‑меню + плавный скролл
+   ------------------------------------------------- */
+const burger   = document.querySelector('.burger');
+const menu     = document.querySelector('nav.menu');
+const overlay  = document.getElementById('menuOverlay');
 
-  if (burger && menu && overlay) {
-    const toggleMenu = () => {
-      burger.classList.toggle('active');
-      menu.classList.toggle('active');
-      overlay.classList.toggle('active');
-    };
-    const closeMenu = () => {
-      burger.classList.remove('active');
-      menu.classList.remove('active');
-      overlay.classList.remove('active');
-    };
+if (burger && menu && overlay) {
+  const toggleMenu = () => {
+    burger.classList.toggle('active');
+    menu.classList.toggle('active');
+    overlay.classList.toggle('active');
+  };
+  const closeMenu = () => {
+    burger.classList.remove('active');
+    menu.classList.remove('active');
+    overlay.classList.remove('active');
+  };
 
-    burger.addEventListener('click', toggleMenu);
-    overlay.addEventListener('click', closeMenu);
+  burger.addEventListener('click', toggleMenu);
+  overlay.addEventListener('click', closeMenu);
 
-    // плавный скролл по пунктам меню + закрытие меню после небольшого таймаута
-    document.querySelectorAll('nav a[href^="#"]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({behavior: 'smooth'});
-          setTimeout(closeMenu, 250);
-        }
-      });
+  // плавный скролл + небольшая задержка, чтобы меню успело закрыться
+  document.querySelectorAll('nav a[href^="#"]').forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({behavior:'smooth'});
+        setTimeout(closeMenu, 250);
+      }
     });
+  });
+}
+
+/* -------------------------------------------------
+   2️⃣ Карусель (дипломы) – drag + autoplay
+   ------------------------------------------------- */
+(function() {
+  const track   = document.getElementById('carouselTrack');
+  const prevBtn = document.getElementById('carouselPrev');
+  const nextBtn = document.getElementById('carouselNext');
+  const dots    = document.getElementById('carouselDots');
+  const container = track ? track.closest('.carousel-container') : null;
+
+  if (!track || !prevBtn || !nextBtn || !dots || !container) return;
+
+  const items = track.querySelectorAll('.carousel-item');
+  const total = items.length;
+  let idx = 0;                         // текущий слайд
+
+  /* ---------- вспомогательные функции ---------- */
+  const visibleCount = () => {
+    if (window.innerWidth <= 520) return 1;
+    if (window.innerWidth <= 900) return 2;
+    return 3;
+  };
+  const slidesCount = () => Math.ceil(total / visibleCount());
+
+  const translateFor = (i) => {
+    const visible = visibleCount();
+    const gap = 18;
+    const w = track.parentElement.offsetWidth;
+    const itemW = (w - gap * (visible - 1)) / visible;
+    return i * visible * (itemW + gap);
+  };
+
+  const renderDots = () => {
+    dots.innerHTML = '';
+    const s = slidesCount();
+    for (let i = 0; i < s; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+      dot.setAttribute('aria-label', `Перейти к слайду ${i + 1}`);
+      dot.addEventListener('click', () => goTo(i));
+      dots.appendChild(dot);
+    }
+  };
+
+  const update = (smooth = true) => {
+    track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
+    const tr = translateFor(idx);
+    track.style.transform = `translateX(-${tr}px)`;
+    dots.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  };
+
+  const goTo = (i) => {
+    const max = slidesCount() - 1;
+    idx = Math.max(0, Math.min(i, max));
+    update(true);
+  };
+  const next = () => goTo(idx + 1);
+  const prev = () => goTo(idx - 1);
+
+  /* ---------- drag‑логика ---------- */
+  let dragging = false, startX = 0, startPos = 0,
+      velocity = 0, lastX = 0, lastTime = 0,
+      curPos = 0;
+
+  const getX = (e) => e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+
+  const startDrag = (e) => {
+    if (e.type === 'mousedown' && e.button !== 0) return;
+    if (e.type === 'touchstart' && e.touches.length !== 1) return;
+
+    dragging = true;
+    startX = getX(e);
+    startPos = translateFor(idx);
+    velocity = 0;
+    lastX = startX;
+    lastTime = Date.now();
+
+    track.classList.add('dragging');
+    container.style.cursor = 'grabbing';
+
+    if (e.type === 'mousedown') {
+      e.preventDefault();
+      document.addEventListener('mousemove', onDrag);
+      document.addEventListener('mouseup', endDrag);
+    } else {
+      document.addEventListener('touchmove', onDrag, {passive:false});
+      document.addEventListener('touchend', endDrag);
+    }
+  };
+
+  const onDrag = (e) => {
+    if (!dragging) return;
+    e.preventDefault();
+    const curX = getX(e);
+    const diff = curX - startX;
+    curPos = startPos - diff;
+
+    const now = Date.now();
+    const dt = now - lastTime;
+    if (dt > 0) velocity = (curX - lastX) / dt;
+    lastX = curX;
+    lastTime = now;
+
+    track.style.transition = 'none';
+    track.style.transform = `translateX(-${curPos}px)`;
+  };
+
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    track.classList.remove('dragging');
+    container.style.cursor = 'grab';
+
+    document.removeEventListener('mousemove', onDrag);
+    document.removeEventListener('mouseup', endDrag);
+    document.removeEventListener('touchmove', onDrag);
+    document.removeEventListener('touchend', endDrag);
+
+    const visible = visibleCount();
+    const w = track.parentElement.offsetWidth;
+    const gap = 18;
+    const itemW = (w - gap * (visible - 1)) / visible;
+    const slideW = visible * (itemW + gap);
+    const threshold = slideW * 0.3;
+    const inertia = velocity * 200;
+    const projected = curPos + inertia;
+
+    let newIdx = Math.round(projected / slideW);
+    const maxIdx = slidesCount() - 1;
+    newIdx = Math.max(0, Math.min(newIdx, maxIdx));
+
+    const diffFromCurrent = curPos - translateFor(idx);
+    if (Math.abs(diffFromCurrent) > threshold) {
+      newIdx = diffFromCurrent > 0 ? Math.min(idx + 1, maxIdx)
+                                    : Math.max(idx - 1, 0);
+    } else {
+      newIdx = idx;
+    }
+
+    idx = newIdx;
+    update(true);
+  };
+
+  /* ---------- инициализация ---------- */
+  renderDots();
+  update();
+
+  // ресайз – пересчёт количества видимых элементов и точек
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      renderDots();
+      idx = 0;
+      update();
+    }, 250);
+  });
+
+  container.addEventListener('mousedown', startDrag);
+  container.addEventListener('touchstart', startDrag, {passive:true});
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  // автопрокрутка (пауза при перетаскивании)
+  let autoplay = setInterval(() => { if (!dragging) next(); }, 5000);
+  container.addEventListener('mouseenter', () => clearInterval(autoplay));
+  container.addEventListener('mouseleave', () => {
+    autoplay = setInterval(() => { if (!dragging) next(); }, 5000);
+  });
+})();
+
+/* -------------------------------------------------
+   3️⃣ ФОРМА + МОДАЛЬНОЕ ОКНО С СОГЛАСИЕМ
+   ------------------------------------------------- */
+const consentModal  = document.getElementById('consentModal');
+const consentChk    = document.getElementById('consentCheckbox');
+const consentAccept = document.getElementById('consentAccept');
+const consentCancel = document.getElementById('consentCancel');
+const form          = document.getElementById('contactForm');
+const formStatus    = document.getElementById('form-status');
+
+const API_URL = 'https://script.google.com/macros/s/AKfycbxYDM-EPa7pT3Vf2uCQDvKgfL2BSQBOu4b3OW8oNJxm_CESK-LemazzIXq0EfqHyL5rFw/exec';
+let payload = null;
+
+function openModal(p) {
+  payload = p;
+  consentChk.checked = false;
+  consentModal.classList.add('active');
+}
+function closeModal(){ consentModal.classList.remove('active'); }
+
+consentCancel.addEventListener('click', closeModal);
+consentModal.addEventListener('click', e => { if (e.target === consentModal) closeModal(); });
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const name   = form.name?.value.trim();
+  const phone  = form.phone?.value.trim();
+  const city   = form.source?.value.trim();
+  const msg    = form.message?.value.trim() || '';
+
+  if (!name || !phone || !city) {
+    formStatus.textContent = 'Пожалуйста, заполните все обязательные поля.';
+    formStatus.style.color = 'red';
+    return;
   }
 
-  /* -------------------------------------------------
-     2️⃣ Карусель сертификатов (drag + autoplay)
-     ------------------------------------------------- */
-  (function() {
-    const track   = document.getElementById('carouselTrack');
-    const prevBtn = document.getElementById('carouselPrev');
-    const nextBtn = document.getElementById('carouselNext');
-    const dots    = document.getElementById('carouselDots');
-    const container = track ? track.closest('.carousel-container') : null;
+  const params = new URLSearchParams({name, phone, source:city, message:msg});
+  openModal(params);
+});
 
-    if (!track || !prevBtn || !nextBtn || !dots || !container) return;
+consentAccept.addEventListener('click', () => {
+  if (!payload) { alert('Сначала заполните форму.'); return; }
+  if (!consentChk.checked) { alert('Подтвердите согласие на обработку персональных данных.'); return; }
 
-    const items = track.querySelectorAll('.carousel-item');
-    const total = items.length;
-    let idx = 0;               // текущий «слайд»
+  formStatus.textContent = 'Отправка…';
+  formStatus.style.color = 'var(--muted)';
+  consentAccept.disabled = true;
+  closeModal();
 
-    /* ---------- вспомогательные функции ---------- */
-    const visibleCount = () => {
-      if (window.innerWidth <= 520) return 1;
-      if (window.innerWidth <= 900) return 2;
-      return 3;
-    };
-    const slidesCount = () => Math.ceil(total / visibleCount());
+  fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: payload.toString()
+  })
+  .then(r => r.text())
+  .then(txt => {
+    console.log('Ответ сервера:', txt);
+    formStatus.textContent = 'Заявка успешно отправлена!';
+    formStatus.style.color = 'green';
+    form.reset();
+    payload = null;
+  })
+  .catch(err => {
+    console.error(err);
+    formStatus.textContent = 'Ошибка отправки, попробуйте позже.';
+    formStatus.style.color = 'red';
+  })
+  .finally(() => consentAccept.disabled = false);
+});
 
-    const translateFor = (index) => {
-      const visible = visibleCount();
-      const gap = 18;
-      const w = track.parentElement.offsetWidth;
-      const itemW = (w - gap * (visible - 1)) / visible;
-      return index * visible * (itemW + gap);
-    };
-
-    const renderDots = () => {
-      dots.innerHTML = '';
-      const s = slidesCount();
-      for (let i = 0; i < s; i++) {
-        const dot = document.createElement('button');
-        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-        dot.setAttribute('aria-label', `Перейти к слайду ${i + 1}`);
-        dot.addEventListener('click', () => goTo(i));
-        dots.appendChild(dot);
-      }
-    };
-
-    const update = (smooth = true) => {
-      track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
-      const tr = translateFor(idx);
-      track.style.transform = `translateX(-${tr}px)`;
-
-      // обновляем активную точку
-      dots.querySelectorAll('.carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
-    };
-
-    const goTo = (i) => {
-      const max = slidesCount() - 1;
-      idx = Math.max(0, Math.min(i, max));
-      update(true);
-    };
-    const next = () => goTo(idx + 1);
-    const prev = () => goTo(idx - 1);
-
-    /* ---------- перетаскивание мышью/тапом ---------- */
-    let dragging = false, startX = 0, startPos = 0,
-        velocity = 0, lastX = 0, lastTime = 0,
-        curPos = 0;
-
-    const getX = (e) => e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-
-    const startDrag = (e) => {
-      if (e.type === 'mousedown' && e.button !== 0) return;
-      if (e.type === 'touchstart' && e.touches.length !== 1) return;
-
-      dragging = true;
-      startX = getX(e);
-      startPos = translateFor(idx);
-      velocity = 0;
-      lastX = startX;
-      lastTime = Date.now();
-
-      track.classList.add('dragging');
-      container.style.cursor = 'grabbing';
-
-      if (e.type === 'mousedown') {
-        e.preventDefault();
-        document.addEventListener('mousemove', onDrag);
-        document.addEventListener('mouseup', endDrag);
-      } else {
-        document.addEventListener('touchmove', onDrag, {passive:false});
-        document.addEventListener('touchend', endDrag);
-      }
-    };
-
-    const onDrag = (e) => {
-      if (!dragging) return;
-      e.preventDefault();
-      const curX = getX(e);
-      const diff = curX - startX;
-      curPos = startPos - diff;
-
-      const now = Date.now();
-      const dt = now - lastTime;
-      if (dt > 0) velocity = (curX - lastX) / dt;
-      lastX = curX;
-      lastTime = now;
-
-      track.style.transition = 'none';
-      track.style.transform = `translateX(-${curPos}px)`;
-    };
-
-    const endDrag = () => {
-      if (!dragging) return;
-      dragging = false;
-      track.classList.remove('dragging');
-      container.style.cursor = 'grab';
-
-      document.removeEventListener('mousemove', onDrag);
-      document.removeEventListener('mouseup', endDrag);
-      document.removeEventListener('touchmove', onDrag);
-      document.removeEventListener('touchend', endDrag);
-
-      // ----- расчёт инерции и «привязка» к ближайшему слайду -----
-      const visible = visibleCount();
-      const w = track.parentElement.offsetWidth;
-      const gap = 18;
-      const itemW = (w - gap * (visible - 1)) / visible;
-      const slideW = visible * (itemW + gap);
-      const threshold = slideW * 0.3;          // 30 % ширины слайда – минимум для переключения
-      const inertia = velocity * 200;          // коэффициент инерции
-      const projected = curPos + inertia;
-
-      let newIdx = Math.round(projected / slideW);
-      const maxIdx = slidesCount() - 1;
-      newIdx = Math.max(0, Math.min(newIdx, maxIdx));
-
-      // если пользователь сильно дернул, переходим на соседний слайд
-      const diffFromCurrent = curPos - translateFor(idx);
-      if (Math.abs(diffFromCurrent) > threshold) {
-        newIdx = diffFromCurrent > 0 ? Math.min(idx + 1, maxIdx)
-                                      : Math.max(idx - 1, 0);
-      } else {
-        newIdx = idx;
-      }
-
-      idx = newIdx;
-      update(true);
-    };
-
-    /* ---------- инициализация ---------- */
-    renderDots();
-    update();
-
-    // реагируем на ресайз – пересчитываем количество видимых элементов и точки
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        renderDots();
-        idx = 0;
-        update();
-      }, 250);
-    });
-
-    // навешиваем события drag‑перетаскивания
-    container.addEventListener('mousedown', startDrag);
-    container.addEventListener('touchstart', startDrag, {passive:true});
-
-    // кнопки «влево/вправо»
-    prevBtn.addEventListener('click', prev);
-    nextBtn.addEventListener('click', next);
-
-    // автопрокрутка (пауза при наведении)
-    let autoplay = setInterval(() => { if (!dragging) next(); }, 5000);
-    container.addEventListener('mouseenter', () => clearInterval(autoplay));
-    container.addEventListener('mouseleave', () => {
-      autoplay = setInterval(() => { if (!dragging) next(); }, 5000);
-    });
-  })();
-
-  /* -------------------------------------------------
-     3️⃣ Форма заявки + модальное окно согласия
-     ------------------------------------------------- */
-  const consentModal   = document.getElementById('consentModal');
-  const consentChk     = document.getElementById('consentCheckbox');
-  const consentAccept  = document.getElementById('consentAccept');
-  const consentCancel  = document.getElementById('consentCancel');
-  const contactForm    = document.getElementById('contactForm');
-  const formStatus     = document.getElementById('form-status');
-
-  const API_URL = 'https://script.google.com/macros/s/AKfycbxYDM-EPa7pT3Vf2uCQDvKgfL2BSQBOu4b3OW8oNJxm_CESK-LemazzIXq0EfqHyL5rFw/exec';
-  let payload = null;
-
-  const openModal = (data) => {
-    payload = data;
-    consentChk.checked = false;
-    consentModal.classList.add('active');
-  };
-  const closeModal = () => consentModal.classList.remove('active');
-
-  consentCancel.addEventListener('click', closeModal);
-  consentModal.addEventListener('click', e => { if (e.target === consentModal) closeModal(); });
-
-  // отправка формы → открываем модальное окно согласия
-  contactForm.addEventListener('submit', e => {
-    e.preventDefault();
-    const name   = contactForm.name?.value.trim();
-    const phone  = contactForm.phone?.value.trim();
-    const city   = contactForm.source?.value.trim();
-    const msg    = contactForm.message?.value.trim() || '';
-
-    if (!name || !phone || !city) {
-      formStatus.textContent = 'Пожалуйста, заполните все обязательные поля.';
-      formStatus.style.color = 'red';
-      return;
-    }
-
-    const params = new URLSearchParams({name, phone, source:city, message:msg});
-    openModal(params);
+/* -------------------------------------------------
+   4️⃣ Защита от битых изображений
+   ------------------------------------------------- */
+const hideBroken = function(){ this.style.display = 'none'; };
+const initImgHandlers = () => {
+  document.querySelectorAll('img').forEach(img => {
+    if (img.complete && !img.naturalHeight) hideBroken.call(img);
+    else img.addEventListener('error', hideBroken, {once:true});
   });
-
-  // пользователь согласился → отправка данных на Google‑Apps‑Script
-  consentAccept.addEventListener('click', () => {
-    if (!payload) {
-      alert('Сначала заполните форму.');
-      return;
-    }
-    if (!consentChk.checked) {
-      alert('Подтвердите согласие на обработку персональных данных.');
-      return;
-    }
-
-    formStatus.textContent = 'Отправка…';
-    formStatus.style.color = 'var(--muted)';
-    consentAccept.disabled = true;
-    closeModal();
-
-    fetch(API_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: payload.toString()
-    })
-    .then(r => r.text())
-    .then(txt => {
-      console.log('Ответ сервера:', txt);
-      formStatus.textContent = 'Заявка успешно отправлена!';
-      formStatus.style.color = 'green';
-      contactForm.reset();
-      payload = null;
-    })
-    .catch(err => {
-      console.error(err);
-      formStatus.textContent = 'Ошибка отправки, попробуйте позже.';
-      formStatus.style.color = 'red';
-    })
-    .finally(() => consentAccept.disabled = false);
-  });
-
-  /* -------------------------------------------------
-     4️⃣ Обработчик битых изображений (чтобы не ломалась верстка)
-     ------------------------------------------------- */
-  const hideBroken = function() { this.style.display = 'none'; };
-  const initImgHandlers = () => {
-    document.querySelectorAll('img').forEach(img => {
-      if (img.complete && !img.naturalHeight) hideBroken.call(img);
-      else img.addEventListener('error', hideBroken, {once:true});
-    });
-  };
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initImgHandlers);
-  else initImgHandlers();
+};
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initImgHandlers);
+else initImgHandlers();
 </script>
 
-<!-- Structured Data (Schema.org) – не меняется -->
+<!-- Structured Data (Schema.org) – без изменений -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
