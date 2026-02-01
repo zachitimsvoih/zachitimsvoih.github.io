@@ -26,14 +26,13 @@
     html { scroll-behavior: smooth; }
     *, *::before, *::after { box-sizing: border-box; }
 
-    /* Отключаем горизонтальную полосу прокрутки, которая могла появиться из‑за фиксированных ширин */
     body {
       margin: 0;
       font-family: Inter, system-ui, 'Segoe UI', Roboto, Arial;
       line-height: 1.6;
       color: var(--text);
       background: var(--bg);
-      overflow-x: hidden;               /* <‑‑ важный момент */
+      overflow-x: hidden;
     }
 
     /* -------------------------------------------------
@@ -47,7 +46,6 @@
       z-index: 100;
       border-bottom: 1px solid var(--border);
     }
-
     .container { max-width:1120px; margin:0 auto; padding:22px; }
 
     /* -------------------------------------------------
@@ -56,22 +54,14 @@
     .nav { display:flex; justify-content:space-between; align-items:center; gap:18px; position:relative; }
     .brand { display:flex; align-items:center; gap:12px; }
 
-    /* ────── ЛОГОТИП ────── */
     .logo {
-      width: 120px;
-      height: 120px;
-      border-radius: 12px;
+      width:120px; height:120px;
+      border-radius:12px;
       overflow:hidden;
       background:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:center;
+      display:flex; align-items:center; justify-content:center;
     }
-    .logo img {
-      width:100%;
-      height:100%;
-      object-fit:contain;            /* сохраняет пропорции, без обрезки */
-    }
+    .logo img { width:100%; height:100%; object-fit:contain; }
 
     nav.menu a {
       color:var(--muted);
@@ -81,11 +71,9 @@
     }
     nav.menu a:hover { color:var(--accent); }
 
-    /* Бургер‑кнопка – видна только на мобильных */
     .burger { display:none; background:none; border:none; cursor:pointer; padding:8px; position:relative; z-index:101; }
     .burger span {
-      display:block;
-      width:26px; height:3px;
+      display:block; width:26px; height:3px;
       background:var(--accent);
       margin:5px 0;
       border-radius:2px;
@@ -102,7 +90,7 @@
     h1,h2,h3 { letter-spacing:-0.2px; }
 
     /* -------------------------------------------------
-       HERO (главный блок)
+       HERO
        ------------------------------------------------- */
     .hero {
       display:grid;
@@ -114,36 +102,53 @@
     h1 { font-size:30px; margin:0 0 14px; }
     .lead { color:var(--muted); margin:0 0 22px; }
     .cta { display:flex; gap:14px; flex-wrap:wrap; }
-    .btn { background:var(--accent); color:#fff; padding:13px 18px; border-radius:10px; border:0; cursor:pointer; font-weight:700; }
-    .btn.ghost { background:transparent; color:var(--accent); border:2px solid var(--accent); }
-
-    /* Универсальная карточка */
-    .card { background:var(--card); padding:20px; border-radius:14px; border:1px solid var(--border); box-shadow:0 8px 22px rgba(0,0,0,.04); }
-
-    /* Карточки внутри карусели – без отступов и фона, чтобы не было «белых» полей */
-    .carousel-item .card {
+    .btn {
+      background:var(--accent);
+      color:#fff;
+      padding:13px 18px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:700;
+      transition:background .3s, transform .2s;
+    }
+    .btn:hover {
+      background:#2c2622;
+      transform:translateY(-2px);
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn.ghost {
       background:transparent;
-      padding:0;
-      border:none;
-      box-shadow:none;
+      color:var(--accent);
+      border:2px solid var(--accent);
     }
 
-    /* Правый блок hero (контактная карточка) – на мобильных 100 % ширины */
+    .card {
+      background:var(--card);
+      padding:20px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      box-shadow:0 8px 22px rgba(0,0,0,.04);
+      overflow-wrap:break-word;      /* перенос long‑words */
+    }
+
+    /* убираем лишний фон/отступы у карточках внутри карусели */
+    .carousel-item .card { background:transparent; padding:0; border:none; box-shadow:none; }
+
     .hero aside {
       flex:0 0 auto;
       width:100%;
-      max-width:350px;       /* ограничиваем ширину только на больших экранах */
+      max-width:350px;
       min-width:0;
     }
 
     /* -------------------------------------------------
-       СЕРВИСЫ (grid‑layout)
+       СЕРВИСЫ
        ------------------------------------------------- */
     .services { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
     .service { display:flex; flex-direction:column; }
     .service img {
-      width:100%; height:auto; max-height:180px;
-      object-fit:cover; border-radius:8px; margin-bottom:12px;
+      width:100%; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:12px;
     }
     .service strong { display:block; margin-bottom:6px; }
 
@@ -171,7 +176,7 @@
     .review-rating { color:#c2a14d; font-size:18px; }
 
     /* -------------------------------------------------
-       КАРУСЕЛЬ (дипломы) – бесконечный, без подпсей
+       КАРУСЕЛЬ (бесконечный, без подпсей)
        ------------------------------------------------- */
     .carousel-container {
       position:relative;
@@ -180,26 +185,32 @@
       margin-top:14px;
       cursor:grab;
       user-select:none;
-      touch-action:none;                 /* отключаем скролл браузера во время drag */
+      touch-action:none;
+      transition:transform .2s ease;
+    }
+    .carousel-container:hover {
+      cursor:pointer;
+      transform:scale(1.02);
     }
     .carousel-container:active { cursor:grabbing; }
 
     .carousel-track {
       display:flex;
-      gap:18px;                           /* будет сброшен в мобильных медиа‑запросах */
+      gap:18px;
       transition:transform .3s cubic-bezier(.25,.46,.45,.94);
       will-change:transform;
     }
     .carousel-track.dragging { transition:none; cursor:grabbing; }
 
     .carousel-item {
-      flex-shrink:0;                      /* ширина будет рассчитываться скриптом */
+      flex-shrink:0;
+      min-width:0;               /* ширина будет рассчитываться в JS */
     }
     .carousel-item img {
       width:100%;
       max-width:100%;
       height:auto;
-      max-height:500px;                /* десктоп */
+      max-height:500px;          /* десктоп */
       object-fit:contain;
       border-radius:8px;
       display:block;
@@ -241,14 +252,14 @@
 
     /* ---- медиазапросы для карусели ---- */
     @media (max-width:900px) {
-      .carousel-nav { display:none; }               /* стрелки только на десктопе */
+      .carousel-nav { display:none; }
       .carousel-item img { max-height:400px; }
     }
     @media (max-width:520px) {
-      .carousel-item { min-width:100%; }
-      .carousel-item img { max-height:300px; }      /* чуть выше, чтобы выглядело красиво */
-      .carousel-controls { display:none; }          /* точки не нужны, показывается один слайд */
-      .carousel-track { gap:0; }                     /* убираем промежутки – исчезают пустые белые области */
+      .carousel-item { min-width:100%; }            /* 2‑диплома */
+      .carousel-item img { max-height:300px; }
+      .carousel-controls { display:none; }
+      .carousel-track { gap:12px; }                 /* небольшой отступ между двумя дипломами */
     }
 
     /* -------------------------------------------------
@@ -290,7 +301,7 @@
       color:var(--text);
       font-weight:500;
       font-size:15px;
-      word-break:break-word;                /* <‑‑ важный момент */
+      word-break:break-word;
     }
     .footer-contact-value.phone { font-weight:700; color:var(--accent); font-size:16px; }
     .footer-contact-value a:hover { color:var(--accent); border-bottom-color:var(--accent); }
@@ -311,7 +322,7 @@
     @media (max-width:900px) {
       .hero { grid-template-columns:1fr; gap:24px; }
       .services { grid-template-columns:repeat(2,1fr); }
-      .cols { grid-template-columns:1f; }
+      .cols { grid-template-columns:1fr; }               /* все двойные колонки (Контакты, О компании) становятся одной */
       .burger { display:block; }
       nav.menu{
         display:none;
@@ -330,7 +341,6 @@
       nav.menu a{ padding:10px 12px; border-radius:8px; }
       nav.menu a:hover{ background:#f4efe8; }
 
-      /* Оверлей под мобильным меню */
       #menuOverlay{
         display:none;
         position:fixed;
@@ -340,14 +350,11 @@
       }
       #menuOverlay.active{ display:block; }
 
-      /* Правый блок hero – теперь 100 % ширины */
       .hero aside {
-        max-width:none;            /* убираем ограничение 350 px */
+        max-width:none;
         width:100%;
         margin-top:20px;
       }
-
-      /* Футер – одна колонка, переносим длинные строки */
       .footer-content { grid-template-columns:1fr; }
     }
 
@@ -355,7 +362,6 @@
       .services { grid-template-columns:1fr; }
       .footer-bottom { flex-direction:column; align-items:center; }
 
-      /* Уменьшаем отступы на мобильных */
       .lead { margin-bottom:16px; }
       .cta { gap:10px; }
       .btn { padding:10px 16px; }
@@ -445,7 +451,6 @@
       color:#fff;
     }
 
-    /* ---- небольшая правка, чтобы статус‑сообщение внутри формы не «вываливалось» ---- */
     #form-status{
       word-break:break-word;
       max-width:100%;
@@ -491,7 +496,7 @@
 <main class="container">
 
   <!-- =========================
-       HERO (главный блок)
+       HERO
   ========================== -->
   <section class="hero">
     <div>
@@ -616,7 +621,7 @@
   </section>
 
   <!-- =========================
-       КАРУСЕЛЬ СЕРТИФИКАТОВ (бесконечный)
+       КАРУСЕЛЬ (2 диплома в мобильной версии)
   ========================== -->
   <section id="trust">
     <h2>Наши сертификаты и дипломы</h2>
@@ -772,7 +777,7 @@
 </div>
 
 <!-- =========================
-     J S (бургер, карусель, форма)
+     JS (бургер, карусель, форма)
 ========================= -->
 <script>
 /* -------------------------------------------------
@@ -793,11 +798,8 @@ if (burger && menu && overlay) {
     menu.classList.remove('active');
     overlay.classList.remove('active');
   };
-
   burger.addEventListener('click', toggleMenu);
   overlay.addEventListener('click', closeMenu);
-
-  // плавный скролл + небольшая задержка, чтобы меню успело закрыться
   document.querySelectorAll('nav a[href^="#"]').forEach(link => {
     link.addEventListener('click', e => {
       e.preventDefault();
@@ -822,26 +824,21 @@ if (burger && menu && overlay) {
 
   if (!track || !prevBtn || !nextBtn || !dots || !container) return;
 
-  const originalHTML = track.innerHTML;          // сохраняем «чистый» набор элементов
-  let realItemsCount = 0;                        // количество реальных карточек
-  let realGroups = 0;                           // количество групп (слайда) без клонов
-  let totalGroups = 0;                          // groups + клоны (плюс 2)
-  let idx = 1;                                   // текущий «групповой» индекс (1 = первая реальная группа)
-  let direction = 0;                            // -1 = назад, 1 = вперёд, 0 = без движения
+  const originalHTML = track.innerHTML;          // сохраняем «чистый» набор
+  let realItemsCount = 0;
+  let realGroups = 0;
+  let totalGroups = 0;
+  let idx = 1;                                   // первая реальная группа
+  let dragging = false;
+  let startX = 0, startPos = 0;
+  let velocity = 0, lastX = 0, lastTime = 0;
+  let curPos = 0;
 
-  /* ---------- вспомогательные функции ---------- */
-  const visibleCount = () => {
-    if (window.innerWidth <= 520) return 1;
-    if (window.innerWidth <= 900) return 2;
-    return 3;
-  };
-
+  const visibleCount = () => (window.innerWidth <= 520 ? 2 : (window.innerWidth <= 900 ? 2 : 3));
   const getGap = () => {
     const style = getComputedStyle(track);
-    const gap = parseFloat(style.columnGap) || 0;
-    return gap;
+    return parseFloat(style.columnGap) || 0;
   };
-
   const slideWidth = () => {
     const visible = visibleCount();
     const gap = getGap();
@@ -849,39 +846,32 @@ if (burger && menu && overlay) {
     const itemW = (containerW - gap * (visible - 1)) / visible;
     return itemW * visible + gap * (visible - 1);
   };
-
   const translateFor = (groupIdx) => groupIdx * slideWidth();
 
-  /* ---------- построение клонов ---------- */
   const buildCarousel = () => {
-    // возвращаем «чистый» набор
     track.innerHTML = originalHTML;
-
     const visible = visibleCount();
     const realItems = Array.from(track.children);
     realItemsCount = realItems.length;
-    realGroups   = Math.ceil(realItemsCount / visible);
-    totalGroups  = realGroups + 2; // +2 – левый и правый клоны
+    realGroups = Math.ceil(realItemsCount / visible);
+    totalGroups = realGroups + 2;                // клоны слева и справа
 
-    // ----- prepend (левый клон) -----
+    // prepend (левый клон)
     for (let i = realItemsCount - visible; i < realItemsCount; i++) {
       const clone = realItems[i].cloneNode(true);
       track.insertBefore(clone, track.firstChild);
     }
-    // ----- append (правый клон) -----
+    // append (правый клон)
     for (let i = 0; i < visible; i++) {
       const clone = realItems[i].cloneNode(true);
       track.appendChild(clone);
     }
 
-    // стартовая позиция – первая реальная группа
     idx = 1;
-    direction = 0;
     renderDots();
     update(false);
   };
 
-  /* ---------- рендер точек ---------- */
   const renderDots = () => {
     dots.innerHTML = '';
     for (let i = 0; i < realGroups; i++) {
@@ -893,48 +883,24 @@ if (burger && menu && overlay) {
     }
   };
 
-  /* ---------- обновление визуала ---------- */
   const update = (smooth = true) => {
     track.style.transition = smooth ? 'transform .3s cubic-bezier(.25,.46,.45,.94)' : 'none';
     const maxTranslate = track.scrollWidth - track.parentElement.offsetWidth;
     const tr = Math.min(translateFor(idx), maxTranslate);
     track.style.transform = `translateX(-${tr}px)`;
 
-    // активная точка
     const dotEls = dots.querySelectorAll('.carousel-dot');
     dotEls.forEach((dot, i) => dot.classList.toggle('active', i === idx - 1));
   };
 
-  /* ---------- переходы ---------- */
-  const goTo = (dotIdx) => {
-    direction = dotIdx + 1 > idx ? 1 : (dotIdx + 1 < idx ? -1 : 0);
-    idx = dotIdx + 1;            // +1 – смещение из‑за левого клона
-    update(true);
-  };
-  const next = () => {
-    direction = 1;
-    idx++;
-    update(true);
-  };
-  const prev = () => {
-    direction = -1;
-    idx--;
-    update(true);
-  };
-
-  /* ---------- drag‑логика ---------- */
-  let dragging = false, startX = 0, startPos = 0,
-      velocity = 0, lastX = 0, lastTime = 0,
-      curPos = 0;
-
-  const getX = (e) => e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+  const goTo = (dotIdx) => { idx = dotIdx + 1; update(true); };
+  const next = () => { idx++; update(true); };
+  const prev = () => { idx--; update(true); };
 
   const startDrag = (e) => {
-    if (e.type === 'mousedown' && e.button !== 0) return;
-    if (e.type === 'touchstart' && e.touches.length !== 1) return;
-
+    if (e.button && e.button !== 0) return;
     dragging = true;
-    startX = getX(e);
+    startX = e.clientX;
     startPos = translateFor(idx);
     velocity = 0;
     lastX = startX;
@@ -942,26 +908,16 @@ if (burger && menu && overlay) {
 
     track.classList.add('dragging');
     container.style.cursor = 'grabbing';
-
-    if (e.type === 'mousedown') {
-      e.preventDefault();
-      document.addEventListener('mousemove', onDrag);
-      document.addEventListener('mouseup', endDrag);
-    } else {
-      document.addEventListener('touchmove', onDrag, {passive:false});
-      document.addEventListener('touchend', endDrag);
-    }
+    track.setPointerCapture(e.pointerId);
   };
 
   const onDrag = (e) => {
     if (!dragging) return;
-    e.preventDefault();
-    const curX = getX(e);
+    const curX = e.clientX;
     const diff = curX - startX;
-    curPos = startPos - diff;
-
     const maxTranslate = track.scrollWidth - track.parentElement.offsetWidth;
-    curPos = Math.max(0, Math.min(curPos, maxTranslate));
+    let newPos = startPos - diff;
+    newPos = Math.max(0, Math.min(newPos, maxTranslate));
 
     const now = Date.now();
     const dt = now - lastTime;
@@ -970,48 +926,41 @@ if (burger && menu && overlay) {
     lastTime = now;
 
     track.style.transition = 'none';
-    track.style.transform = `translateX(-${curPos}px)`;
+    track.style.transform = `translateX(-${newPos}px)`;
+    curPos = newPos;
   };
 
-  const endDrag = () => {
+  const endDrag = (e) => {
     if (!dragging) return;
     dragging = false;
     track.classList.remove('dragging');
     container.style.cursor = 'grab';
-
-    document.removeEventListener('mousemove', onDrag);
-    document.removeEventListener('mouseup', endDrag);
-    document.removeEventListener('touchmove', onDrag);
-    document.removeEventListener('touchend', endDrag);
+    track.releasePointerCapture(e.pointerId);
 
     const sw = slideWidth();
-    const threshold = sw * 0.3;               // когда переключать слайд
-    const inertia = velocity * 200;           // небольшая «инерция»
+    const threshold = sw * 0.25;
+    const inertia = velocity * 200;
     const projected = curPos + inertia;
 
-    let newIdx = Math.round(projected / sw);
-    // кольцевой переход
-    if (newIdx <= 0)          newIdx = totalGroups - 2;   // последний реальный
-    if (newIdx >= totalGroups - 1) newIdx = 1;           // первый реальный
+    let newIdx = Math.round(projected / sw) + 1; // +1 смещение на клон
 
-    direction = newIdx > idx ? 1 : -1;
+    if (newIdx <= 0) newIdx = totalGroups - 2;
+    if (newIdx >= totalGroups - 1) newIdx = 1;
+
     idx = newIdx;
     update(true);
   };
 
-  /* ---------- завершение анимации (переключение к реальному слайду) ---------- */
   track.addEventListener('transitionend', () => {
-    // если попали на клон‑группу справа
     if (idx === totalGroups - 1) {
-      idx = 1;                         // первый реальный
+      idx = 1;
       track.style.transition = 'none';
       update(false);
-      void track.offsetWidth;          // принудительный reflow
+      void track.offsetWidth;
       track.style.transition = '';
     }
-    // если попали на клон‑группу слева
     if (idx === 0) {
-      idx = totalGroups - 2;           // последний реальный
+      idx = totalGroups - 2;
       track.style.transition = 'none';
       update(false);
       void track.offsetWidth;
@@ -1019,21 +968,22 @@ if (burger && menu && overlay) {
     }
   });
 
-  /* ---------- инициализация ---------- */
+  // Инициализация
   buildCarousel();
 
-  // ресайз – пересчитываем клоны и размеры
+  // ресайз
   let resizeTimer;
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      buildCarousel();
-    }, 250);
+    resizeTimer = setTimeout(buildCarousel, 250);
   });
 
-  // обработчики
-  container.addEventListener('mousedown', startDrag);
-  container.addEventListener('touchstart', startDrag, {passive:true});
+  // Обработчики
+  track.addEventListener('pointerdown', startDrag);
+  track.addEventListener('pointermove', onDrag);
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+
   prevBtn.addEventListener('click', prev);
   nextBtn.addEventListener('click', next);
 
