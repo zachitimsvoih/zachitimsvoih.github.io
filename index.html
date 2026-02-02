@@ -1082,9 +1082,7 @@ if (burger && menu && overlay) {
   buildCarousel();
 })();
 
-/* -------------------------------------------------
-   3️⃣ Форма + модальное окно согласия
-   ------------------------------------------------- */
+<script>
 /* -------------------------------------------------
    3️⃣ Форма + модальное окно согласия
    ------------------------------------------------- */
@@ -1096,12 +1094,11 @@ const form           = document.getElementById('contactForm');
 const formStatus     = document.getElementById('form-status');
 const phoneErrorEl   = document.querySelector('.phone-error');
 
-// ИСПОЛЬЗУЙТЕ URL ИЗ ВАШЕГО DEPLOYMENT, а не этот пример!
+/* Сюда вставьте URL, который вы получили после Deploy → Web app */
 const API_URL = 'https://script.google.com/macros/s/AKfycbzYSIL-s_XMdPFCdT5jv6iPi139fZY0gls9gVBVSVFm9taeb8amP410AUsQ8Qvj80Z1/exec';
 
-let currentPayload = null;
+let currentPayload = null;   // будет хранить URLSearchParams до согласия
 
-// Открытие модального окна
 function openModal(payload) {
   currentPayload = payload;
   consentChk.checked = false;
@@ -1109,69 +1106,69 @@ function openModal(payload) {
   document.body.style.overflow = 'hidden';
 }
 
-// Закрытие модального окна
 function closeModal(){
   consentModal.classList.remove('active');
   document.body.style.overflow = '';
 }
 
-// Обработчики модального окна
+/* ---------- Обработчики модального окна ---------- */
 consentCancel.addEventListener('click', closeModal);
 consentModal.addEventListener('click', e => {
   if (e.target === consentModal) closeModal();
 });
 
-// Обработка отправки формы
+/* ---------- Отправка формы (перед модальным окном) ---------- */
 form.addEventListener('submit', e => {
   e.preventDefault();
 
-  const name  = form.name?.value.trim() || '';
-  const phone = form.phone?.value.trim() || '';
+  const name  = form.name?.value.trim()   || '';
+  const phone = form.phone?.value.trim()  || '';
   const city  = form.source?.value.trim() || '';
   const msg   = form.message?.value.trim() || '';
 
-  // Сброс сообщений об ошибках
-  if (phoneErrorEl) phoneErrorEl.textContent = '';
+  // Сбрасываем сообщения об ошибках
+  phoneErrorEl.textContent = '';
   formStatus.textContent = '';
   formStatus.style.color = '';
 
-  // Валидация полей
+  // Проверка обязательных полей
   if (!name || !phone || !city) {
     formStatus.textContent = 'Заполните все обязательные поля.';
     formStatus.style.color = 'red';
     return;
   }
-  
+
+  // Валидация телефона (тот же паттерн, что и в скрипте)
   const phonePat = /^(?:\+7|8)?\s*\(?\d{3}\)?\s*\d{3}[\s-]?\d{2}[\s-]?\d{2}$/;
   if (!phonePat.test(phone)) {
-    if (phoneErrorEl) {
-      phoneErrorEl.textContent = 'Введите телефон в формате +7 (999) 123‑45‑67 или 89991234567';
-    }
+    phoneErrorEl.textContent = 'Введите телефон в формате +7 (999) 123‑45‑67 или 89991234567';
     return;
   }
 
-  // Формирование данных
+  // Формируем payload (URL‑encoded)
   const payload = new URLSearchParams({
-    name: name,
-    phone: phone,
+    name,
+    phone,
     source: city,
     message: msg
   });
 
+  // Открываем модальное окно согласия
   openModal(payload);
 });
 
-// Отправка данных после согласия
+/* ---------- Кнопка «Принять и отправить» ---------- */
 consentAccept.addEventListener('click', async () => {
-  if (!currentPayload) {
-    alert('Сначала заполните форму');
-    return;
-  }
+  // Пользователь ещё не нажал "Отправить"
+  if (!currentPayload) { alert('Сначала заполните форму'); return; }
+
+  // Согласие не поставлено
   if (!consentChk.checked) {
     alert('Подтвердите согласие на обработку персональных данных');
     return;
   }
 
+  // UI: показываем, что отправляем
   formStatus.textContent = 'Отправка…';
   formStatus.style.color = 'var(--muted)';
   consentAccept.disabled = true;
@@ -1181,15 +1178,16 @@ consentAccept.addEventListener('click', async () => {
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/x-www-form-urlencoded' // важный тип
       },
-      body: currentPayload.toString()
+      body: currentPayload.toString() // <--- URLSearchParams → строка
+      // mode: 'cors'   // По умолчанию уже cors; не ставим no‑cors, иначе не увидим ответ
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-    }
+    // Если сервер вернул не 2xx → бросаем исключение
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
+    // Ожидаем JSON {result:'ok'} или {result:'error', error:{message:...}}
     const data = await response.json();
 
     if (data.result === 'ok') {
@@ -1198,18 +1196,21 @@ consentAccept.addEventListener('click', async () => {
       form.reset();
       currentPayload = null;
     } else {
-      const errorMsg = data.error?.message || 'Неизвестная ошибка';
-      formStatus.textContent = 'Ошибка: ' + errorMsg;
+      const msg = data.error?.message || 'Неизвестная ошибка сервера';
+      formStatus.textContent = `Ошибка сервера: ${msg}`;
       formStatus.style.color = 'red';
+      console.error('Ответ сервера →', data);
     }
   } catch (err) {
-    console.error('Fetch error:', err);
-    formStatus.textContent = 'Ошибка отправки: ' + err.message;
+    console.error('Fetch error →', err);
+    formStatus.textContent = 'Ошибка отправки. Попробуйте позже.';
     formStatus.style.color = 'red';
   } finally {
     consentAccept.disabled = false;
   }
 });
+</script>
+
 
 
 /* -------------------------------------------------
