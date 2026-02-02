@@ -1082,134 +1082,163 @@ if (burger && menu && overlay) {
   buildCarousel();
 })();
 
-/* -------------------------------------------------
-   3️⃣ Форма + модальное окно согласия
-   ------------------------------------------------- */
-const consentModal   = document.getElementById('consentModal');
-const consentChk     = document.getElementById('consentCheckbox');
-const consentAccept  = document.getElementById('consentAccept');
-const consentCancel  = document.getElementById('consentCancel');
-const form           = document.getElementById('contactForm');
-const formStatus     = document.getElementById('form-status');
-const phoneErrorEl   = document.querySelector('.phone-error');
+/* -----------------------------------------------------------------
+   0️⃣ Параметры скрипта (URL вашего Google‑Apps‑Script Web‑App)
+   ----------------------------------------------------------------- */
+const API_URL = 'https://script.google.com/macros/s/AKfycbzYSIL‑s_XMdPFCdT5jv6iPi139fZY0gls9gVBVSVFm9taeb8amP410AUsQ8Qvj80Z1/exec'; // ← Ставьте сюда ваш /exec URL
 
-/* Сюда вставьте URL, который вы получили после Deploy → Web app */
-const API_URL = 'https://script.google.com/macros/s/AKfycbzYSIL-s_XMdPFCdT5jv6iPi139fZY0gls9gVBVSVFm9taeb8amP410AUsQ8Qvj80Z1/exec';
 
-let currentPayload = null;   // будет хранить URLSearchParams до согласия
+/* -----------------------------------------------------------------
+   1️⃣ Элементы формы и модального окна согласия
+   ----------------------------------------------------------------- */
+const form            = document.getElementById('contactForm');
+const formStatus      = document.getElementById('form-status');
+const phoneErrorEl    = document.querySelector('.phone-error');
 
-function openModal(payload) {
-  currentPayload = payload;
+const consentModal    = document.getElementById('consentModal');
+const consentChk      = document.getElementById('consentCheckbox');
+const consentAccept   = document.getElementById('consentAccept');
+const consentCancel   = document.getElementById('consentCancel');
+
+/* -----------------------------------------------------------------
+   2️⃣ Вспомогательные переменные / функции
+   ----------------------------------------------------------------- */
+let payload = null;               // будет заполнен после успешной валидации формы
+
+/** Открывает модальное окно согласия и сохраняет подготовленный payload */
+function openModal(p) {
+  payload = p;                     // URLSearchParams объект
   consentChk.checked = false;
   consentModal.classList.add('active');
   document.body.style.overflow = 'hidden';
 }
 
-function closeModal(){
+/** Закрывает модальное окно */
+function closeModal() {
   consentModal.classList.remove('active');
   document.body.style.overflow = '';
 }
 
-/* ---------- Обработчики модального окна ---------- */
-consentCancel.addEventListener('click', closeModal);
+/** Закрывает окно, если кликнули вне диалога */
 consentModal.addEventListener('click', e => {
   if (e.target === consentModal) closeModal();
 });
 
-/* ---------- Отправка формы (перед модальным окном) ---------- */
-form.addEventListener('submit', e => {
-  e.preventDefault();
+/** Кнопка «Отмена» в модальном окне */
+consentCancel.addEventListener('click', closeModal);
 
-  const name  = form.name?.value.trim()   || '';
-  const phone = form.phone?.value.trim()  || '';
-  const city  = form.source?.value.trim() || '';
+/** Сборка payload из формы (используется после submit) */
+function buildPayloadFromForm() {
+  const name  = form.name?.value.trim()    || '';
+  const phone = form.phone?.value.trim()   || '';
+  const city  = form.source?.value.trim()  || '';
+  const msg   = form.message?.value.trim() || '';
+  return new URLSearchParams({name, phone, source: city, message: msg});
+}
+
+/** Сборка payload из URL‑строки (если пользователь открыл страницу с ?name=…&phone=…) */
+function buildPayloadFromQuery() {
+  // location.search уже начинается с «?», просто уберём его
+  const qs = window.location.search.replace(/^\\?/, '');
+  return new URLSearchParams(qs);
+}
+
+/* -----------------------------------------------------------------
+   3️⃣ Обработчик submit формы
+   ----------------------------------------------------------------- */
+form.addEventListener('submit', e => {
+  e.preventDefault();                     // отменяем обычный submit
+
+  // ---------- 3.1 Считываем поля ----------
+  const name  = form.name?.value.trim()    || '';
+  const phone = form.phone?.value.trim()   || '';
+  const city  = form.source?.value.trim()  || '';
   const msg   = form.message?.value.trim() || '';
 
-  // Сбрасываем сообщения об ошибках
-  phoneErrorEl.textContent = '';
+  // ---------- 3.2 Очистка старых сообщений ----------
+  if (phoneErrorEl) phoneErrorEl.textContent = '';
   formStatus.textContent = '';
   formStatus.style.color = '';
 
-  // Проверка обязательных полей
+  // ---------- 3.3 Базовая валидация ----------
   if (!name || !phone || !city) {
     formStatus.textContent = 'Заполните все обязательные поля.';
     formStatus.style.color = 'red';
     return;
   }
 
- // ---------- Валидация телефона ----------
-const phonePat = /^(?:\+7|8)?\s*\(?\d{3}\)?[\s‑‑–—-]*\d{3}[\s‑‑–—-]*\d{2}[\s‑‑–—-]*\d{2}$/;
-if (!phonePat.test(phone)) {
-  phoneErrorEl.textContent =
-    'Введите телефон в формате +7 (999) 123‑45‑67 или 89991234567';
-  return;               // Остановка отправки
-}
-console.log('Телефон:', phone, 'прошёл проверку →', phonePat.test(phone));
+  // ---------- 3.4 Проверка телефона (толерантна к любым тире) ----------
+  // Принимает +7, 8, любые дефисы (‑ – — -) и пробелы
+  const phonePat = /^(?:\\+7|8)?\\s*\\(?\\d{3}\\)?[\\s‑‑–—-]*\\d{3}[\\s‑‑–—-]*\\d{2}[\\s‑‑–—-]*\\d{2}$/;
+  if (!phonePat.test(phone)) {
+    if (phoneErrorEl) phoneErrorEl.textContent =
+      'Введите телефон в формате +7 (999) 123‑45‑67 или 89991234567';
+    return;
+  }
 
-
-  // Формируем payload (URL‑encoded)
-  const payload = new URLSearchParams({
-    name,
-    phone,
-    source: city,
-    message: msg
-  });
-
-  // Открываем модальное окно согласия
-  openModal(payload);
+  // ---------- 3.5 Формируем payload и открываем модальное окно ----------
+  const p = buildPayloadFromForm();   // URLSearchParams
+  openModal(p);
 });
 
-/* ---------- Кнопка «Принять и отправить» ---------- */
+/* -----------------------------------------------------------------
+   4️⃣ Кнопка «Принять и отправить» в модальном окне
+   ----------------------------------------------------------------- */
 consentAccept.addEventListener('click', async () => {
-  // Пользователь ещё не нажал "Отправить"
-  if (!currentPayload) { alert('Сначала заполните форму'); return; }
+  // ----- 4.1 Если payload ещё не определён (например, пользователь открыл страницу сразу с query‑параметрами) -----
+  if (!payload) {
+    payload = buildPayloadFromQuery();
 
-  // Согласие не поставлено
+    // проверяем наличие обязательных параметров
+    if (!payload.get('name') || !payload.get('phone') || !payload.get('source')) {
+      alert('Отсутствуют обязательные параметры (имя, телефон, город).');
+      closeModal();
+      return;
+    }
+  }
+
+  // ----- 4.2 Требуется согласие -----
   if (!consentChk.checked) {
     alert('Подтвердите согласие на обработку персональных данных');
     return;
   }
 
-  // UI: показываем, что отправляем
+  // ----- 4.3 UI‑индикатор отправки -----
   formStatus.textContent = 'Отправка…';
   formStatus.style.color = 'var(--muted)';
-  consentAccept.disabled = true;
-  closeModal();
+  consentAccept.disabled = true;     // блокируем кнопку, пока ждём ответ
+  closeModal();                      // скрываем модальное окно
 
+  // ----- 4.4 Отправка запроса -----
   try {
-    console.log('Отправляем POST →', API_URL, payload.toString());
     const response = await fetch(API_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded' // важный тип
-      },
-      body: currentPayload.toString() // <--- URLSearchParams → строка
-      // mode: 'cors'   // По умолчанию уже cors; не ставим no‑cors, иначе не увидим ответ
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: payload.toString()
     });
 
-    // Если сервер вернул не 2xx → бросаем исключение
+    // Если сервер вернул код не‑2xx – бросаем ошибку
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-    // Ожидаем JSON {result:'ok'} или {result:'error', error:{message:...}}
-    const data = await response.json();
+    const data = await response.json();   // ожидаем {result:'ok'}  или {result:'error'}
 
     if (data.result === 'ok') {
       formStatus.textContent = 'Заявка успешно отправлена!';
       formStatus.style.color = 'green';
-      form.reset();
-      currentPayload = null;
+      form.reset();          // очищаем форму
+      payload = null;       // сбрасываем глобальный объект
     } else {
       const msg = data.error?.message || 'Неизвестная ошибка сервера';
-      formStatus.textContent = `Ошибка сервера: ${msg}`;
+      formStatus.textContent = 'Ошибка сервера: ' + msg;
       formStatus.style.color = 'red';
       console.error('Ответ сервера →', data);
     }
   } catch (err) {
     console.error('Fetch error →', err);
-    formStatus.textContent = 'Ошибка отправки. Попробуйте позже.';
+    formStatus.textContent = 'Ошибка отправки, попробуйте позже.';
     formStatus.style.color = 'red';
   } finally {
-    consentAccept.disabled = false;
+    consentAccept.disabled = false;   // снова включаем кнопку
   }
 });
 
