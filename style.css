@@ -75,47 +75,82 @@ section { padding:36px 0; border-top:1px solid rgba(0,0,0,0.03); }
 h1,h2,h3 { letter-spacing:-0.2px; }
 
 /* -------------------------------------------------
-   HERO
+   HERO С ФОНОВОЙ КАРТИНКОЙ
    ------------------------------------------------- */
 .hero {
-  display:grid;
-  grid-template-columns:1fr 380px;
-  gap:32px;
-  align-items:center;
-}
-.badge { display:inline-block; background:#ede4da; color:var(--accent); padding:6px 12px; border-radius:999px; font-weight:700; margin-bottom:14px; }
-h1 { font-size:30px; margin:0 0 14px; }
-.lead { color:var(--muted); margin:0 0 22px; }
-.cta { display:flex; gap:14px; flex-wrap:wrap; }
-.btn {
-  background:var(--accent);
-  color:#fff;
-  padding:13px 18px;
-  border-radius:10px;
-  border:0;
-  cursor:pointer;
-  font-weight:700;
-  transition:background .3s, transform .2s;
-}
-.btn:hover {
-  background:#2c2622;
-  transform:translateY(-2px);
-  box-shadow:0 4px 12px rgba(0,0,0,0.15);
-}
-.btn.ghost {
-  background:transparent;
-  color:var(--accent);
-  border:2px solid var(--accent);
+    display:grid;
+    grid-template-columns:1fr 380px;
+    gap:32px;
+    align-items:center;
+    position: relative;
+    background-image: url('assets/podlogka.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 60px 0; /* Увеличиваем отступы для лучшего вида */
+    border-radius: 16px; /* Скругляем углы блока */
+    margin: 20px 0; /* Добавляем отступы сверху и снизу */
 }
 
-.card {
-  background:var(--card);
-  padding:20px;
-  border-radius:14px;
-  border:1px solid var(--border);
-  box-shadow:0 8px 22px rgba(0,0,0,.04);
-  overflow-wrap:break-word;
+/* Затемнение фона для лучшей читаемости текста */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(244, 239, 232, 0.85); /* Полупрозрачный белый поверх фона */
+    border-radius: 16px;
+    z-index: 1;
 }
+
+/* Все содержимое героя поверх фона */
+.hero > div,
+.hero aside {
+    position: relative;
+    z-index: 2;
+}
+
+/* Улучшаем читаемость текста на фоне */
+.hero h1 {
+    color: var(--accent);
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+.hero .lead {
+    color: var(--muted);
+    text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+}
+
+/* Карточки внутри героя делаем более прозрачными для гармонии с фоном */
+.hero .card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(5px);
+}
+
+/* Адаптив для мобильных */
+@media (max-width:900px) {
+    .hero {
+        grid-template-columns:1fr;
+        gap:24px;
+        padding: 40px 0;
+        margin: 15px 0;
+    }
+    
+    .hero::before {
+        border-radius: 12px;
+    }
+}
+
+@media (max-width:520px) {
+    .hero {
+        padding: 30px 0;
+        margin: 10px 0;
+        border-radius: 12px;
+    }
+}
+
 
 /* убираем фон и паддинги у карточек внутри карусели */
 .carousel-item .card { background:transparent; padding:0; border:none; box-shadow:none; }
