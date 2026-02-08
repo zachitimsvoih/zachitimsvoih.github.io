@@ -1,92 +1,216 @@
-/* ---------- Переменные ---------- */
+/* ================================
+   ЦВЕТОВАЯ ПАЛИТРА И ШРИФТЫ
+   ================================ */
+
+/* ---------- ЦВЕТОВЫЕ ПЕРЕМЕННЫЕ ---------- */
 :root {
-  --bg: #f4efe8;      /* фон страницы */
-  --card: #ffffff;    /* фон карточек */
-  --accent: #3a2f2a;  /* основной акцент */
-  --muted: #6b625c;   /* вспомогательный цвет */
-  --text: #1f1b18;    /* основной цвет текста */
-  --border: #e3dbd2;  /* границы */
+  --bg: #f4efe8;      /* Основной фон страницы - светлый бежевый */
+  --card: #ffffff;    /* Фон карточек - чисто белый */
+  --accent: #3a2f2a;  /* Основной акцентный цвет - тёмно-коричневый */
+  --muted: #6b625c;   /* Вспомогательный цвет текста - серо-коричневый */
+  --text: #1f1b18;    /* Основной цвет текста - почти чёрный */
+  --border: #e3dbd2;  /* Цвет границ - светлый бежевый */
 }
 
-html { scroll-behavior: smooth; }
-*, *::before, *::after { box-sizing: border-box; }
+/* ---------- НАСТРОЙКИ ШРИФТОВ ---------- */
+html { 
+  scroll-behavior: smooth; /* Плавная прокрутка */
+}
 
+/* Сброс отступов и использование border-box */
+*, *::before, *::after { 
+  box-sizing: border-box; 
+}
+
+/* Основные настройки шрифта для всей страницы */
 body {
   margin: 0;
+  /* Шрифтовая палитра: Inter (современный шрифт), системный UI, Segoe UI, Roboto, Arial */
   font-family: Inter, system-ui, 'Segoe UI', Roboto, Arial;
-  line-height: 1.6;
-  color: var(--text);
-  background: var(--bg);
+  line-height: 1.6; /* Межстрочный интервал */
+  color: var(--text); /* Цвет текста - почти чёрный */
+  background: var(--bg); /* Фон страницы - светлый бежевый */
   overflow-x: hidden;
 }
 
-/* -------------------------------------------------
-   ХЕДЕР (фикс‑бар + размытие)
-   ------------------------------------------------- */
+/* ================================
+   ШАПКА САЙТА
+   ================================ */
+
+/* Хедер с эффектом размытия */
 header {
-  background: rgba(244,239,232,0.9);
-  backdrop-filter: blur(6px);
+  background: rgba(244,239,232,0.9); /* Полупрозрачный бежевый фон */
+  backdrop-filter: blur(6px); /* Эффект размытия */
   position: sticky;
   top: 0;
   z-index: 100;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border); /* Светлая граница */
 }
-.container { max-width:1120px; margin:0 auto; padding:22px; }
 
-/* -------------------------------------------------
-   НАВИГАЦИЯ (логотип, меню, бургер)
-   ------------------------------------------------- */
-.nav { display:flex; justify-content:space-between; align-items:center; gap:18px; position:relative; }
-.brand { display:flex; align-items:center; gap:12px; }
+/* Контейнер с ограничением по ширине */
+.container { 
+  max-width:1120px; 
+  margin:0 auto; 
+  padding:22px; 
+}
 
+/* ================================
+   НАВИГАЦИЯ
+   ================================ */
+
+/* Основной контейнер навигации */
+.nav { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+  gap:18px; 
+  position:relative; 
+}
+
+/* Бренд (логотип + название) */
+.brand { 
+  display:flex; 
+  align-items:center; 
+  gap:12px; 
+}
+
+/* Стили логотипа */
 .logo {
-  width:120px; height:120px;
+  width:120px; 
+  height:120px;
   border-radius:12px;
   overflow:hidden;
-  background:#fff;
-  display:flex; align-items:center; justify-content:center;
+  background:#fff; /* Белый фон лого */
+  display:flex; 
+  align-items:center; 
+  justify-content:center;
 }
-.logo img { width:100%; height:100%; object-fit:contain; }
 
+/* Изображение логотипа */
+.logo img { 
+  width:100%; 
+  height:100%; 
+  object-fit:contain; 
+}
+
+/* Ссылки в навигации */
 nav.menu a {
-  color:var(--muted);
+  color:var(--muted); /* Серо-коричневый цвет */
   text-decoration:none;
-  font-weight:600;
+  font-weight:600; /* Полужирный шрифт */
   margin-right:12px;
 }
-nav.menu a:hover { color:var(--accent); }
 
-.burger { display:none; background:none; border:none; cursor:pointer; padding:8px; position:relative; z-index:101; }
+/* Ховер-эффект для ссылок */
+nav.menu a:hover { 
+  color:var(--accent); /* Цвет при наведении - тёмно-коричневый */
+}
+
+/* Бургер-меню для мобильных */
+.burger { 
+  display:none; 
+  background:none; 
+  border:none; 
+  cursor:pointer; 
+  padding:8px; 
+  position:relative; 
+  z-index:101; 
+}
+
+/* Полоски бургер-меню */
 .burger span {
-  display:block; width:26px; height:3px;
-  background:var(--accent);
+  display:block; 
+  width:26px; 
+  height:3px;
+  background:var(--accent); /* Тёмно-коричневый цвет */
   margin:5px 0;
   border-radius:2px;
   transition:.4s;
 }
+
+/* Анимация бургер-меню */
 .burger.active span:nth-child(1){ transform:rotate(45deg) translate(5px,5px); }
 .burger.active span:nth-child(2){ opacity:0; }
 .burger.active span:nth-child(3){ transform:rotate(-45deg) translate(5px,-5px); }
 
-/* -------------------------------------------------
-   СЕКЦИИ (общие отступы)
-   ------------------------------------------------- */
-section { padding:36px 0; border-top:1px solid rgba(0,0,0,0.03); }
-h1,h2,h3 { letter-spacing:-0.2px; }
+/* ================================
+   ОСНОВНЫЕ СЕКЦИИ
+   ================================ */
+
+/* Общие стили для секций */
+section { 
+  padding:36px 0; 
+  border-top:1px solid rgba(0,0,0,0.03); /* Очень светлая граница */
+}
+
+/* Заголовки */
+h1,h2,h3 { 
+  letter-spacing:-0.2px; /* Уменьшенный межбуквенный интервал */
+}
 
 /* -------------------------------------------------
-   HERO
+   HERO С ФОНОВОЙ КАРТИНКОЙ
    ------------------------------------------------- */
 .hero {
   display:grid;
   grid-template-columns:1fr 380px;
   gap:32px;
   align-items:center;
+  /* Добавляем фоновую картинку */
+  background-image: url('assets/podlogka.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding:60px 0;
+  border-radius:16px;
+  margin:20px 0;
+  min-height:500px;
+  position: relative; /* Для наложения */
 }
-.badge { display:inline-block; background:#ede4da; color:var(--accent); padding:6px 12px; border-radius:999px; font-weight:700; margin-bottom:14px; }
-h1 { font-size:30px; margin:0 0 14px; }
-.lead { color:var(--muted); margin:0 0 22px; }
-.cta { display:flex; gap:14px; flex-wrap:wrap; }
+
+/* Затемнение фона для лучшей читаемости текста */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(244, 239, 232, 0.85); /* Полупрозрачный бежевый */
+  border-radius: 16px;
+  z-index: 1;
+}
+
+/* Весь контент hero поверх фона */
+.hero > div,
+.hero aside {
+  position: relative;
+  z-index: 2;
+}
+
+/* Остальные стили hero остаются без изменений */
+.badge { 
+  display:inline-block; 
+  background:#ede4da; 
+  color:var(--accent); 
+  padding:6px 12px; 
+  border-radius:999px; 
+  font-weight:700; 
+  margin-bottom:14px; 
+}
+h1 { 
+  font-size:30px; 
+  margin:0 0 14px; 
+}
+.lead { 
+  color:var(--muted); 
+  margin:0 0 22px; 
+}
+.cta { 
+  display:flex; 
+  gap:14px; 
+  flex-wrap:wrap; 
+}
 .btn {
   background:var(--accent);
   color:#fff;
@@ -117,9 +241,6 @@ h1 { font-size:30px; margin:0 0 14px; }
   overflow-wrap:break-word;
 }
 
-/* убираем фон и паддинги у карточек внутри карусели */
-.carousel-item .card { background:transparent; padding:0; border:none; box-shadow:none; }
-
 .hero aside {
   flex:0 0 auto;
   width:100%;
@@ -127,86 +248,188 @@ h1 { font-size:30px; margin:0 0 14px; }
   min-width:0;
 }
 
-/* -------------------------------------------------
-   СЕРВИСЫ - ОДИНАКОВЫЙ РАЗМЕР ФОТО
-   ------------------------------------------------- */
+/* Адаптив для hero с фоном */
+@media (max-width:900px) {
+  .hero { 
+    grid-template-columns:1fr; 
+    gap:24px; 
+    padding:40px 0;
+    margin:15px 0;
+    min-height:auto;
+  }
+}
+
+@media (max-width:520px) {
+  .hero {
+    padding:30px 0;
+    margin:10px 0;
+  }
+}
+
+
+/* ================================
+   БЛОК УСЛУГ
+   ================================ */
+
+/* Сетка услуг */
 .services { 
-    display:grid; 
-    grid-template-columns:repeat(3,1fr); 
-    gap:16px; 
-    margin-top:22px; 
+  display:grid; 
+  grid-template-columns:repeat(3,1fr); 
+  gap:16px; 
+  margin-top:22px; 
 }
 
+/* Карточка услуги */
 .service {
-    display:flex; 
-    flex-direction:column;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    box-shadow:0 6px 16px rgba(0,0,0,.04);
-    transition:transform .3s ease, box-shadow .3s ease;
-    font-weight:500;
-    height: 100%;
+  display:flex; 
+  flex-direction:column;
+  background:var(--card); /* Белый фон */
+  border:1px solid var(--border); /* Светлая граница */
+  border-radius:14px;
+  box-shadow:0 6px 16px rgba(0,0,0,.04); /* Лёгкая тень */
+  transition:transform .3s ease, box-shadow .3s ease;
+  font-weight:500; /* Средняя жирность */
+  height: 100%;
 }
 
+/* Ховер-эффект услуги */
 .service:hover {
-    transform:translateY(-4px);
-    box-shadow:0 12px 24px rgba(0,0,0,.08);
+  transform:translateY(-4px); /* Поднятие карточки */
+  box-shadow:0 12px 24px rgba(0,0,0,.08); /* Усиленная тень */
 }
 
-/* ОДИНАКОВЫЙ РАЗМЕР ДЛЯ ВСЕХ ФОТОГРАФИЙ */
+/* Изображения услуг (одинаковый размер) */
 .service img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px 8px 0 0;
-    margin-bottom: 0;
+  width: 100%;
+  height: 200px; /* Фиксированная высота */
+  object-fit: cover; /* Обрезка для сохранения пропорций */
+  border-radius: 8px 8px 0 0; /* Скругление верхних углов */
+  margin-bottom: 0;
 }
 
+/* Контент внутри карточки услуги */
 .service-content {
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Заголовок услуги */
 .service strong { 
-    display:block; 
-    margin-bottom:8px;
-    font-size: 18px;
+  display:block; 
+  margin-bottom:8px;
+  font-size: 18px;
 }
 
+/* Текст услуги */
 .service p { 
-    margin:0; 
-    flex-grow: 1;
+  margin:0; 
+  flex-grow: 1;
 }
 
-.cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
-.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+/* Двухколоночные блоки */
+.cols { 
+  display:grid; 
+  grid-template-columns:1fr 1fr; 
+  gap:18px; 
+}
 
-.phone { font-weight:800; color:var(--accent); text-decoration:none; }
-.lead-small { color:var(--muted); font-size:15px; }
+/* Трёхколоночные блоки */
+.grid-3 { 
+  display:grid; 
+  grid-template-columns:repeat(3,1fr); 
+  gap:18px; 
+}
 
+/* Телефонные ссылки */
+.phone { 
+  font-weight:800; /* Очень жирный шрифт */
+  color:var(--accent); /* Тёмно-коричневый */
+  text-decoration:none;
+}
+
+/* Мелкий подзаголовок */
+.lead-small { 
+  color:var(--muted); /* Серо-коричневый */
+  font-size:15px; /* Уменьшенный размер шрифта */
+}
+
+/* Поля формы */
 form input, form textarea {
-  width:100%; padding:11px; border:1px solid var(--border); border-radius:8px; margin-bottom:12px; font-family:inherit;
+  width:100%; 
+  padding:11px; 
+  border:1px solid var(--border); /* Светлая граница */
+  border-radius:8px; 
+  margin-bottom:12px; 
+  font-family:inherit; /* Наследование шрифта */
 }
-form button { width:100%; }
 
-/* -------------------------------------------------
-   ОТЗЫВЫ
-   ------------------------------------------------- */
-.reviews { padding:60px 0; }
-.reviews-title { text-align:center; font-size:32px; margin-bottom:40px; color:var(--accent); }
-.reviews-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:24px; }
-.review-card { background:var(--card); border:1px solid var(--border); border-radius:16px; padding:24px; }
-.review-text { color:var(--text); margin-bottom:16px; }
-.review-footer { display:flex; justify-content:space-between; align-items:center; }
-.review-name { font-weight:600; color:var(--accent); }
-.review-rating { color:#c2a14d; font-size:18px; }
+/* Кнопка формы */
+form button { 
+  width:100%; 
+}
 
-/* -------------------------------------------------
-   КАРУСЕЛЬ (дипломы)
-   ------------------------------------------------- */
+/* ================================
+   БЛОК ОТЗЫВОВ
+   ================================ */
+
+.reviews { 
+  padding:60px 0; 
+}
+
+/* Заголовок отзывов */
+.reviews-title { 
+  text-align:center; 
+  font-size:32px; 
+  margin-bottom:40px; 
+  color:var(--accent); /* Тёмно-коричневый */
+}
+
+/* Сетка отзывов */
+.reviews-grid { 
+  display:grid; 
+  grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); 
+  gap:24px; 
+}
+
+/* Карточка отзыва */
+.review-card { 
+  background:var(--card); /* Белый фон */
+  border:1px solid var(--border); /* Светлая граница */
+  border-radius:16px; 
+  padding:24px; 
+}
+
+/* Текст отзыва */
+.review-text { 
+  color:var(--text); /* Основной цвет текста */
+  margin-bottom:16px; 
+}
+
+/* Нижняя часть отзыва */
+.review-footer { 
+  display:flex; 
+  justify-content:space-between; 
+  align-items:center; 
+}
+
+/* Имя автора отзыва */
+.review-name { 
+  font-weight:600; /* Полужирный */
+  color:var(--accent); /* Тёмно-коричневый */
+}
+
+/* Рейтинг звёздочками */
+.review-rating { 
+  color:#c2a14d; /* Золотистый цвет */
+  font-size:18px; 
+}
+
+/* ================================
+   КАРУСЕЛЬ ДИПЛОМОВ
+   ================================ */
+
 .carousel-container {
   position:relative;
   overflow:hidden;
@@ -217,187 +440,268 @@ form button { width:100%; }
   touch-action:none;
   transition:transform .2s ease;
 }
+
+/* Ховер-эффект карусели */
 .carousel-container:hover {
   cursor:pointer;
-  transform:scale(1.02);
+  transform:scale(1.02); /* Лёгкое увеличение */
 }
-.carousel-container:active { cursor:grabbing; }
 
+.carousel-container:active { 
+  cursor:grabbing; 
+}
+
+/* Дорожка карусели */
 .carousel-track {
   display:flex;
   gap:18px;
   transition:transform .3s cubic-bezier(.25,.46,.45,.94);
   will-change:transform;
 }
-.carousel-track.dragging { transition:none; }
 
+.carousel-track.dragging { 
+  transition:none; 
+}
+
+/* Элемент карусели */
 .carousel-item {
   flex-shrink:0;
-  min-width:0;                 /* будет переопределено в медиазапросах */
+  min-width:0;
 }
+
+/* Изображения в карусели */
 .carousel-item img {
   width:100%;
   max-width:100%;
   height:auto;
-  max-height:500px;            /* десктоп */
+  max-height:500px;
   object-fit:contain;
   border-radius:8px;
   display:block;
 }
 
+/* Точки навигации */
 .carousel-controls {
   display:flex;
   justify-content:center;
   gap:8px;
   margin-top:16px;
 }
+
+/* Отдельная точка */
 .carousel-dot {
-  width:10px; height:10px;
+  width:10px; 
+  height:10px;
   border-radius:50%;
-  background:var(--border);
+  background:var(--border); /* Светлый цвет */
   border:none;
   cursor:pointer;
   transition:background .3s;
 }
-.carousel-dot.active { background:var(--accent); }
 
+/* Активная точка */
+.carousel-dot.active { 
+  background:var(--accent); /* Тёмно-коричневый */
+}
+
+/* Кнопки навигации */
 .carousel-nav {
   position:absolute;
-  top:50%; transform:translateY(-50%);
-  background:rgba(255,255,255,.9);
-  border:1px solid var(--border);
+  top:50%; 
+  transform:translateY(-50%);
+  background:rgba(255,255,255,.9); /* Полупрозрачный белый */
+  border:1px solid var(--border); /* Светлая граница */
   border-radius:50%;
-  width:40px; height:40px;
-  display:flex; align-items:center; justify-content:center;
+  width:40px; 
+  height:40px;
+  display:flex; 
+  align-items:center; 
+  justify-content:center;
   cursor:pointer;
   z-index:10;
   transition:background .3s;
   font-size:20px;
-  color:var(--accent);
-}
-.carousel-nav:hover { background:var(--card); }
-.carousel-nav.prev { left:10px; }
-.carousel-nav.next { right:10px; }
-
-/* ---- медиазапросы для карусели ---- */
-@media (max-width:900px) {
-  .carousel-nav { display:none; }
-  .carousel-item img { max-height:400px; }
-}
-@media (max-width:520px) {
-  .carousel-item {
-    flex:0 0 100% !important;
-    min-width:100% !important;
-  }
-  .carousel-item img { max-height:300px; }
-  .carousel-controls { display:none; }
-  .carousel-track { gap:0 !important; }
+  color:var(--accent); /* Тёмно-коричневый */
 }
 
-/* -------------------------------------------------
-   ФУТЕР
-   ------------------------------------------------- */
+/* Ховер-эффект кнопок навигации */
+.carousel-nav:hover { 
+  background:var(--card); /* Белый фон */
+}
+
+/* Кнопка "назад" */
+.carousel-nav.prev { 
+  left:10px; 
+}
+
+/* Кнопка "вперёд" */
+.carousel-nav.next { 
+  right:10px; 
+}
+
+/* ================================
+   ПОДВАЛ САЙТА
+   ================================ */
+
 footer {
   padding:40px 0;
-  color:var(--muted);
-  font-size:14px;
-  background:var(--card);
-  border-top:1px solid var(--border);
+  color:var(--muted); /* Серо-коричневый текст */
+  font-size:14px; /* Уменьшенный шрифт */
+  background:var(--card); /* Белый фон */
+  border-top:1px solid var(--border); /* Светлая граница */
   margin-top:40px;
 }
+
+/* Содержимое подвала */
 .footer-content {
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:30px;
   margin-bottom:30px;
 }
+
+/* Контакты в подвале */
 .footer-contacts {
   display:flex;
   flex-direction:column;
   gap:12px;
 }
-.footer-contacts h3 { font-size:18px; font-weight:700; color:var(--accent); margin:0 0 16px; letter-spacing:-0.2px; }
+
+/* Заголовок контактов */
+.footer-contacts h3 { 
+  font-size:18px; 
+  font-weight:700; 
+  color:var(--accent); /* Тёмно-коричневый */
+  margin:0 0 16px; 
+  letter-spacing:-0.2px; 
+}
+
+/* Элемент контакта */
 .footer-contact-item {
   display:flex;
   align-items:flex-start;
   gap:10px;
   padding:8px 0;
 }
+
+/* Метка контакта */
 .footer-contact-label {
-  font-weight:600;
-  color:var(--accent);
+  font-weight:600; /* Полужирный */
+  color:var(--accent); /* Тёмно-коричневый */
   min-width:80px;
-  font-size:14px;
+  font-size:14px; /* Уменьшенный шрифт */
 }
+
+/* Значение контакта */
 .footer-contact-value {
-  color:var(--text);
-  font-weight:500;
+  color:var(--text); /* Основной цвет текста */
+  font-weight:500; /* Средняя жирность */
   font-size:15px;
   word-break:break-word;
 }
-.footer-contact-value.phone { font-weight:700; color:var(--accent); font-size:16px; }
+
+/* Телефон в подвале */
+.footer-contact-value.phone { 
+  font-weight:700; /* Жирный шрифт */
+  color:var(--accent); /* Тёмно-коричневый */
+  font-size:16px; 
+}
+
+/* Ховер-эффект телефона */
 .footer-contact-value.phone:hover,
 .footer-contact-item a.footer-contact-value.phone:hover {
   text-decoration:underline;
 }
-.footer-contact-value a:hover { color:var(--accent); border-bottom-color:var(--accent); }
 
+/* Ховер-эффект ссылок */
+.footer-contact-value a:hover { 
+  color:var(--accent); /* Тёмно-коричневый */
+  border-bottom-color:var(--accent); 
+}
+
+/* Нижняя часть подвала */
 .footer-bottom {
   padding-top:20px;
-  border-top:1px solid var(--border);
+  border-top:1px solid var(--border); /* Светлая граница */
   display:flex;
   justify-content:space-between;
   flex-wrap:wrap;
   gap:10px;
-  font-size:13px;
+  font-size:13px; /* Ещё меньше шрифт */
 }
 
-/* -------------------------------------------------
-   АДАПТИВ
-   ------------------------------------------------- */
+/* ================================
+   АДАПТИВНЫЕ СТИЛИ
+   ================================ */
+
+/* Планшеты (до 900px) */
 @media (max-width:900px) {
-  .hero { grid-template-columns:1fr; gap:24px; }
-  .services { grid-template-columns:repeat(2,1fr); }
-  .cols { grid-template-columns:1fr; }
-  .burger { display:block; }
+  .hero { 
+    grid-template-columns:1fr; 
+    gap:24px; 
+  }
+  .services { 
+    grid-template-columns:repeat(2,1fr); 
+  }
+  .cols { 
+    grid-template-columns:1fr; 
+  }
+  .burger { 
+    display:block; /* Показываем бургер */
+  }
+  
+  /* Мобильное меню */
   nav.menu{
     display:none;
     position:absolute;
-    top:100%; right:0;
-    background:#fff;
-    border:1px solid var(--border);
+    top:100%; 
+    right:0;
+    background:#fff; /* Белый фон */
+    border:1px solid var(--border); /* Светлая граница */
     border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    box-shadow:0 10px 30px rgba(0,0,0,.08); /* Тень */
     flex-direction:column;
     padding:12px;
     min-width:220px;
     z-index:100;
   }
-  nav.menu.active{ display:flex; }
-  nav.menu a{ padding:10px 12px; border-radius:8px; }
-  nav.menu a:hover{ background:#f4efe8; }
+  nav.menu.active{ 
+    display:flex; 
+  }
+  nav.menu a{ 
+    padding:10px 12px; 
+    border-radius:8px; 
+  }
+  nav.menu a:hover{ 
+    background:#f4efe8; /* Светло-бежевый фон */
+  }
 
+  /* Оверлей меню */
   #menuOverlay{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.3);
+    background:rgba(0,0,0,.3); /* Тёмный полупрозрачный */
     z-index:99;
   }
-  #menuOverlay.active{ display:block; }
+  #menuOverlay.active{ 
+    display:block; 
+  }
 
   .hero aside {
     max-width:none;
     width:100%;
     margin-top:20px;
   }
-  .footer-content { grid-template-columns:1fr; }
+  .footer-content { 
+    grid-template-columns:1fr; 
+  }
 }
 
-/* ── Адаптив для самых маленьких экранов ── */
+/* Мобильные устройства (до 520px) */
 @media (max-width:520px) {
   .services {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Одна колонка */
     gap: 16px;
   }
 
@@ -409,53 +713,71 @@ footer {
   .lead   { margin-bottom:16px; }
   .cta    { gap:10px; }
   .btn    { padding:10px 16px; }
-  h1      { font-size:24px; }
+  h1      { font-size:24px; } /* Уменьшенный заголовок */
   .badge  { font-size:14px; padding:4px 10px; }
 }
 
-/* -------------------------------------------------
+/* ================================
    МОДАЛЬНОЕ ОКНО СОГЛАСИЯ
-   ------------------------------------------------- */
+   ================================ */
+
 .modal-overlay{
   display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.5);
+  background:rgba(0,0,0,.5); /* Тёмный полупрозрачный фон */
   z-index:1000;
   align-items:center;
   justify-content:center;
-  backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px); /* Размытие фона */
 }
-.modal-overlay.active{ display:flex; }
+.modal-overlay.active{ 
+  display:flex; 
+}
 
+/* Само модальное окно */
 .modal{
-  background:var(--card);
+  background:var(--card); /* Белый фон */
   border-radius:16px;
   padding:32px;
   max-width:500px;
   width:90%;
   max-height:90vh;
   overflow-y:auto;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  box-shadow:0 20px 60px rgba(0,0,0,.3); /* Тень */
   animation:modalSlideIn .3s ease-out;
   position:relative;
 }
+
+/* Анимация появления */
 @keyframes modalSlideIn{
-  from{opacity:0; transform:translateY(-20px);}
-  to{opacity:1; transform:translateY(0);}
+  from{
+    opacity:0; 
+    transform:translateY(-20px);
+  }
+  to{
+    opacity:1; 
+    transform:translateY(0);
+  }
 }
+
+/* Заголовок модального окна */
 .modal h3{
   font-size:22px;
   font-weight:700;
-  color:var(--accent);
+  color:var(--accent); /* Тёмно-коричневый */
   margin:0 0 16px;
 }
+
+/* Текст модального окна */
 .modal p{
   font-size:15px;
   line-height:1.7;
-  color:var(--text);
+  color:var(--text); /* Основной цвет текста */
   margin:0 0 20px;
 }
+
+/* Чекбокс согласия */
 .modal-checkbox{
   display:flex;
   align-items:flex-start;
@@ -463,55 +785,74 @@ footer {
   margin:20px 0;
   cursor:pointer;
 }
+
+/* Поле чекбокса */
 .modal-checkbox input{
-  width:20px; height:20px;
+  width:20px; 
+  height:20px;
   cursor:pointer;
   margin-top:2px;
   flex-shrink:0;
 }
+
+/* Текст чекбокса */
 .modal-checkbox label{
   font-size:14px;
   line-height:1.6;
-  color:var(--text);
+  color:var(--text); /* Основной цвет текста */
   cursor:pointer;
 }
+
+/* Ссылка в чекбоксе */
 .modal-checkbox label a{
-  color:var(--accent);
+  color:var(--accent); /* Тёмно-коричневый */
   text-decoration:underline;
 }
+
+/* Кнопки модального окна */
 .modal-buttons{
   display:flex;
   gap:12px;
   margin-top:24px;
 }
-.modal-buttons button{flex:1;}
-.btn-secondary{
-  background:transparent;
-  color:var(--accent);
-  border:2px solid var(--accent);
-}
-.btn-secondary:hover{
-  background:var(--accent);
-  color:#fff;
+.modal-buttons button{
+  flex:1;
 }
 
+/* Вторичная кнопка */
+.btn-secondary{
+  background:transparent; /* Прозрачный фон */
+  color:var(--accent); /* Тёмно-коричневый текст */
+  border:2px solid var(--accent); /* Граница */
+}
+
+/* Ховер-эффект вторичной кнопки */
+.btn-secondary:hover{
+  background:var(--accent); /* Тёмно-коричневый фон */
+  color:#fff; /* Белый текст */
+}
+
+/* Статус формы */
 #form-status{
   word-break:break-word;
   max-width:100%;
 }
 
-/* -------------------------------------------------
-   Ошибки в полях формы
-   ------------------------------------------------- */
+/* ================================
+   ОШИБКИ В ФОРМЕ
+   ================================ */
+
 form .error {
-  color:#c00;
-  font-size:13px;
+  color:#c00; /* Красный цвет ошибок */
+  font-size:13px; /* Мелкий шрифт */
   margin-top:4px;
 }
 
-/* -------------------------------------------------
-   Предпочтения «без анимации»
-   ------------------------------------------------- */
+/* ================================
+   ДОСТУПНОСТЬ (PREFERENCES)
+   ================================ */
+
+/* Отключение анимаций для пользователей с настройками доступности */
 @media (prefers-reduced-motion: reduce) {
   .service,
   .btn,
@@ -522,5 +863,7 @@ form .error {
     transition:none !important;
     animation:none !important;
   }
-  .carousel-container:hover { transform:none; }
+  .carousel-container:hover { 
+    transform:none; 
+  }
 }
