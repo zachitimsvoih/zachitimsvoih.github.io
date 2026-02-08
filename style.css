@@ -21,7 +21,7 @@ body {
 }
 
 /* -------------------------------------------------
-   ХЕДЕР (фикс-бар + размытие)
+   ХЕДЕР (фикс‑бар + размытие)
    ------------------------------------------------- */
 header {
   background: rgba(244,239,232,0.9);
@@ -75,82 +75,47 @@ section { padding:36px 0; border-top:1px solid rgba(0,0,0,0.03); }
 h1,h2,h3 { letter-spacing:-0.2px; }
 
 /* -------------------------------------------------
-   HERO С ФОНОВОЙ КАРТИНКОЙ - ИСПРАВЛЕННАЯ ВЕРСИЯ
+   HERO
    ------------------------------------------------- */
 .hero {
-    display: grid;
-    grid-template-columns: 1fr 380px;
-    gap: 32px;
-    align-items: center;
-    position: relative;
-    background-image: url('./assets/podlogka.jpg'); /* Исправленный путь */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    padding: 60px 0;
-    border-radius: 16px;
-    margin: 20px 0;
-    min-height: 500px; /* Минимальная высота для красоты */
+  display:grid;
+  grid-template-columns:1fr 380px;
+  gap:32px;
+  align-items:center;
+}
+.badge { display:inline-block; background:#ede4da; color:var(--accent); padding:6px 12px; border-radius:999px; font-weight:700; margin-bottom:14px; }
+h1 { font-size:30px; margin:0 0 14px; }
+.lead { color:var(--muted); margin:0 0 22px; }
+.cta { display:flex; gap:14px; flex-wrap:wrap; }
+.btn {
+  background:var(--accent);
+  color:#fff;
+  padding:13px 18px;
+  border-radius:10px;
+  border:0;
+  cursor:pointer;
+  font-weight:700;
+  transition:background .3s, transform .2s;
+}
+.btn:hover {
+  background:#2c2622;
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+.btn.ghost {
+  background:transparent;
+  color:var(--accent);
+  border:2px solid var(--accent);
 }
 
-/* Затемнение фона для лучшей читаемости */
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(244, 239, 232, 0.88); /* Более плотное наложение */
-    border-radius: 16px;
-    z-index: 1;
+.card {
+  background:var(--card);
+  padding:20px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  box-shadow:0 8px 22px rgba(0,0,0,.04);
+  overflow-wrap:break-word;
 }
-
-/* Контент поверх фона */
-.hero > div {
-    position: relative;
-    z-index: 2;
-}
-
-.hero aside {
-    position: relative;
-    z-index: 2;
-}
-
-/* Улучшаем читаемость */
-.hero h1 {
-    color: var(--accent);
-}
-
-.hero .lead {
-    color: var(--muted);
-}
-
-/* Карточки делаем полностью белыми для контраста */
-.hero .card {
-    background: #ffffff;
-    border: 1px solid var(--border);
-}
-
-/* Адаптив */
-@media (max-width: 900px) {
-    .hero {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 40px 0;
-        margin: 15px 0;
-        min-height: auto;
-    }
-}
-
-@media (max-width: 520px) {
-    .hero {
-        padding: 30px 0;
-        margin: 10px 0;
-    }
-}
-
-
 
 /* убираем фон и паддинги у карточек внутри карусели */
 .carousel-item .card { background:transparent; padding:0; border:none; box-shadow:none; }
@@ -163,28 +128,58 @@ h1,h2,h3 { letter-spacing:-0.2px; }
 }
 
 /* -------------------------------------------------
-   СЕРВИСЫ
+   СЕРВИСЫ - ОДИНАКОВЫЙ РАЗМЕР ФОТО
    ------------------------------------------------- */
-.services { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:22px; }
+.services { 
+    display:grid; 
+    grid-template-columns:repeat(3,1fr); 
+    gap:16px; 
+    margin-top:22px; 
+}
+
 .service {
-  display:flex; flex-direction:column;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:14px;
-  box-shadow:0 6px 16px rgba(0,0,0,.04);
-  transition:transform .3s ease, box-shadow .3s ease;
-  /* ← фиксируем вес текста внутри карточки, чтобы он не выглядел «тонким» */
-  font-weight:500;          /* средний вес, читаемо и не жирно */
+    display:flex; 
+    flex-direction:column;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:0 6px 16px rgba(0,0,0,.04);
+    transition:transform .3s ease, box-shadow .3s ease;
+    font-weight:500;
+    height: 100%;
 }
+
 .service:hover {
-  transform:translateY(-4px);
-  box-shadow:0 12px 24px rgba(0,0,0,.08);
+    transform:translateY(-4px);
+    box-shadow:0 12px 24px rgba(0,0,0,.08);
 }
+
+/* ОДИНАКОВЫЙ РАЗМЕР ДЛЯ ВСЕХ ФОТОГРАФИЙ */
 .service img {
-  width:100%; max-height:180px; object-fit:cover; border-radius:8px; margin-bottom:12px;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    margin-bottom: 0;
 }
-.service strong { display:block; margin-bottom:6px; }
-.service p { margin:0; }      /* убираем лишние отступы у абзацев внутри карточки */
+
+.service-content {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.service strong { 
+    display:block; 
+    margin-bottom:8px;
+    font-size: 18px;
+}
+
+.service p { 
+    margin:0; 
+    flex-grow: 1;
+}
 
 .cols { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
 .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
@@ -401,14 +396,11 @@ footer {
 
 /* ── Адаптив для самых маленьких экранов ── */
 @media (max-width:520px) {
-  /* Блок «Услуги» */
   .services {
-    /* Одна колонка, которая растягивается на всю ширину контейнера */
-    grid-template-columns: 1fr;          /* <‑‑ вместо 1px */
-    gap: 16px;                           /* при желании можно скорректировать */
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  /* Прочие стили, которые уже есть в вашем файле */
   .footer-bottom {
     flex-direction: column;
     align-items: center;
